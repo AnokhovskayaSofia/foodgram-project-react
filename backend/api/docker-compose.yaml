@@ -22,18 +22,18 @@ services:
 
   frontend:
     build:
-      context: ../frontend
+      context: ../../frontend
       dockerfile: Dockerfile
     volumes:
-      - ../frontend/:/app/result_build/
+      - ../../frontend/:/app/result_build/
 
   nginx:
     image: nginx:1.19.3
     ports:
       - 80:80
     volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
-      - ../frontend/:/app/result_build/
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ../../frontend/:/app/result_build/
       - ../docs/redoc.html:/usr/share/nginx/html/api/docs/redoc.html
       - ../docs/openapi-schema.yml:/usr/share/nginx/html/api/docs/openapi-schema.yml
       - static_value:/var/html/static/
