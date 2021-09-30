@@ -16,10 +16,6 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=150)
     email = models.EmailField(unique=True)
 
-    @property
-    def is_admin(self):
-        return UserRole.ADMIN == self.role
-
 
 class SubscribedUser(models.Model):
     user = models.ForeignKey(
