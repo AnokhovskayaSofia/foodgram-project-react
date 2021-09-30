@@ -1,83 +1,61 @@
-from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import get_object_or_404
-from django.template.loader import render_to_string
-from rest_framework import filters, status, viewsets
-from rest_framework.decorators import action, api_view
+from rest_framework import status
+from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from djoser.views import UserViewSet
 
-from .models import User
-from .permissions import IsAdminUser
-from .serializers import ActivationSerializer, UserSerializer
-from .tokens import account_activation_token
-from .utils import get_tokens_for_user
-
-
-# class UserViewSet(viewsets.ModelViewSet):
-#     """
-#     A simple ViewSet for listing or retrieving users.
-#     """
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
-
-#     permission_classes = [IsAuthenticated, IsAdminUser, ]
-
-#     pagination_class = PageNumberPagination
-#     filter_backends = [filters.SearchFilter]
-#     search_fields = ['username', ]
-#     lookup_field = 'username'
-#     lookup_value_regex = '[^/]+'
-
-#     @action(
-#         detail=False,
-#         methods=['get', 'patch'],
-#         permission_classes=[IsAuthenticated])
-#     def me(self, request, pk=None):
-#         user = request.user
-#         if request.method == 'GET':
-#             serializer = self.get_serializer(user)
-#             return Response(serializer.data)
-#         serializer = self.get_serializer(user,
-#                                          data=request.data, partial=True)
-#         serializer.is_valid(raise_exception=True)
-#         serializer.save(role=user.role, partial=True)
-#         return Response(serializer.data)
+from .models import User, SubscribedUser
+from content.models import Recipe
+from .serializers import SubscribeSerializer, UserSerializer
 
 
-# @api_view(['POST'])
-# def signup(request):
-#     serializer = UserSerializer(data=request.data)
-#     serializer.is_valid(raise_exception=True)
-#     user = serializer.save(is_active=False)
+class UserViewSet(UserViewSet):
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+    pagination_class = PageNumberPagination
+    queryset = User.objects.all()
 
-#     current_site = get_current_site(request)
-#     subject = 'Activate Your YaMDb Account'
-#     message = render_to_string('emails/account_activation_email.html', {
-#         'username': user.username,
-#         'domain': current_site.domain,
-#         'confirmation_code': account_activation_token.make_token(user)
-#     })
-#     user.email_user(subject, message)
+    @action(detail=False,
+            methods=['GET'],
+            permission_classes=[IsAuthenticated])
+    def subscriptions(self, request):
+        queryset = SubscribedUser.objects.filter(user=self.request.user)
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = SubscribeSerializer(page, many=True,
+                                             context={'request': request})
+            return self.get_paginated_response(serializer.data)
+        serializer = self.get_serializer(queryset, many=True,
+                                         context={'request': request})
+        return Response(serializer.data)
 
-#     return Response(serializer.data, status=status.HTTP_201_CREATED)
+    @action(detail=True,
+            methods=['GET', 'DELETE'],
+            permission_classes=[IsAuthenticated],
+            url_path='subscribe')
+    def subscribe(self, request, pk):
+        if request.method == 'GET':
+            user_subscribed_to = get_object_or_404(User, pk=pk)
+            recipes = Recipe.objects.filter(author=user_subscribed_to)
+            serializer = SubscribeSerializer(user_subscribed_to)
 
-
-# @api_view(['POST'])
-# def activate(request):
-#     activation = ActivationSerializer(data=request.data)
-#     activation.is_valid(raise_exception=True)
-#     user = get_object_or_404(User, email=activation.validated_data['email'])
-
-#     if (activation.validated_data['confirmation_code']
-#             == request.data['confirmation_code']):
-#         serializer = UserSerializer(user, data=request.data, partial=True)
-#         serializer.is_valid(raise_exception=True)
-#         serializer.save(
-#             is_active=True,
-#             email_confirmed=True,
-#         )
-#         tokens = get_tokens_for_user(user)
-#         return Response({'token': tokens['access']})
-
-#     return Response(status=status.HTTP_403_FORBIDDEN)
+            if SubscribedUser.objects.filter(user=self.request.user,
+                                             user_subscribed_to=user_subscribed_to).exists():
+                return Response({'errors': 'Вы уже подписаны на пользователя'})
+            else:
+                SubscribedUser.objects.create(user=self.request.user,
+                                              user_subscribed_to=user_subscribed_to)
+            return Response(serializer.data)
+        if request.method == 'DELETE':
+            user_subscribed_to = get_object_or_404(User, pk=pk)
+            if SubscribedUser.objects.filter(user=self.request.user,
+                                             user_subscribed_to=user_subscribed_to).exists():
+                instance = SubscribedUser.objects.filter(user=self.request.user,
+                                                         user_subscribed_to=user_subscribed_to)
+                instance.delete()
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            else:
+                return Response({'errors': 'Вы не подписаны на пользователя'},
+                                status=status.HTTP_400_BAD_REQUEST)

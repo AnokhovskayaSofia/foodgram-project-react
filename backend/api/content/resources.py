@@ -6,7 +6,13 @@ from .models import Recipe, Ingredient, IngredientsRecipe, Tag, Favourite, Shopp
 class RecipeResource(resources.ModelResource):
     class Meta:
         model = Recipe
-        fields = ('id', 'author', 'name', 'text', 'ingredients', 'tags', 'cooking_time',)
+        fields = ('id',
+                  'author',
+                  'name',
+                  'text',
+                  'ingredients',
+                  'tags',
+                  'cooking_time',)
 
 
 class IngredientResource(resources.ModelResource):

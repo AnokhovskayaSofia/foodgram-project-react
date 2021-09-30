@@ -1,32 +1,38 @@
-from .models import Recipe
 from rest_framework import serializers
 from .models import Tag, Recipe, Ingredient, IngredientsRecipe, Shopping, Favourite
 from users.serializers import UserSerializer
 from django.shortcuts import get_object_or_404
-from django.db.models import Count, F
+from django.db.models import F
 
-class IngredientsSerializer(serializers.ModelSerializer):
-    exclude = ('id',)
-    model = Ingredient    
+
+class IngredientSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = ('name', 'measurement_unit')
+        model = Ingredient
+
 
 class AddIngredientsSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(read_only=True, source='ingredient.name')
+    measurement_unit = serializers.CharField(read_only=True, source='ingredient.measurement_unit')
+
     class Meta:
-        fields = ('id', 'ingredient', 'recipe')
-        model = IngredientsRecipe    
+        fields = ('id', 'name', 'measurement_unit', 'amount', )
+        model = IngredientsRecipe
 
 
 class TagsSerializer(serializers.ModelSerializer):
-    print('serializerTag')
     class Meta:
-        fields = ('id', 'name', 'HEX_code', 'slug')
+        fields = ('id', 'name', 'color', 'slug')
         model = Tag
 
+
 class RecipeSerializer(serializers.ModelSerializer):
-    author = serializers.SlugRelatedField(slug_field='username',
-                                          read_only=True
-                                          )
+    id = serializers.IntegerField(read_only=True)
+    author = UserSerializer()
     name = serializers.CharField(read_only=True)
-    ingredients = AddIngredientsSerializer(many=True, read_only=True)
+    ingredients = AddIngredientsSerializer(source='recipe_content', 
+                                           many=True,
+                                           read_only=True)
     tags = TagsSerializer(many=True, read_only=True)
     image = serializers.ImageField()
     cooking_time = serializers.DecimalField(max_digits=4, decimal_places=1)
@@ -41,18 +47,14 @@ class RecipeSerializer(serializers.ModelSerializer):
         for ingredient in ingredients:
             obj = get_object_or_404(Ingredient, id=ingredient['id'])
             amount = ingredient['amount']
-            if IngredientsRecipe.objects.filter(
-                 recipe=recipe,
-                 ingredient=obj
-                ).exists():
+            if IngredientsRecipe.objects.filter(recipe=recipe,
+                                                ingredient=obj).exists():
                 amount += F('amount')
-            IngredientsRecipe.objects.update_or_create(
-             recipe=recipe,
-             ingredient=obj,
-             defaults={'amount': amount}
-            )
+            IngredientsRecipe.objects.update_or_create(recipe=recipe,
+                                                       ingredient=obj,
+                                                       defaults={'amount': amount})
         return recipe
- 
+
     def update(self, instance, validated_data):
         if 'ingredients' in self.initial_data:
             ingredients = validated_data.pop('ingredients')
@@ -60,39 +62,53 @@ class RecipeSerializer(serializers.ModelSerializer):
             for ingredient in ingredients:
                 obj = get_object_or_404(Ingredient, id=ingredient['id'])
                 amount = ingredient['amount']
-                if IngredientsRecipe.objects.filter(
-                     recipe=instance,
-                     ingredient=obj
-                    ).exists():
+                if IngredientsRecipe.objects.filter(recipe=instance,
+                                                    ingredient=obj).exists():
                     amount += F('amount')
-                IngredientsRecipe.objects.update_or_create(
-                 recipe=instance,
-                 ingredient=obj,
-                 defaults={'amount': amount}
-                 )
+                IngredientsRecipe.objects.update_or_create(recipe=instance,
+                                                           ingredient=obj,
+                                                           defaults={'amount': amount})
         if 'tags' in self.initial_data:
             tags = validated_data.pop('tags')
             instance.tags.set(tags)
- 
+
         instance.name = validated_data.get('name', instance.name)
         instance.text = validated_data.get('text', instance.text)
-        instance.cooking_time = validated_data.get(
-             'cooking_time',
-             instance.cooking_time
-        )
+        instance.cooking_time = validated_data.get('cooking_time',
+                                                   instance.cooking_time)
         instance.image = validated_data.get('image', instance.image)
         instance.save()
         return instance
 
-    
-    def check_is_favourite(self,obj):
-        user = self.context.get('request').user
+    def check_is_favourite(self, obj):
+        user = self.context.get('request').user.id
         return Favourite.objects.filter(user=user, recipe=obj).exists()
 
     def check_is_in_shopping(self, obj):
-        user = self.context.get('request').user
+        user = self.context.get('request').user.id
         return Shopping.objects.filter(user=user, recipe=obj).exists()
-    
+
     class Meta:
         model = Recipe
-        fields = ('__all__')
+        fields = ('id',
+                  'tags',
+                  'author',
+                  'ingredients',
+                  'is_favourite',
+                  'is_in_shopping',
+                  'name',
+                  'image',
+                  'text',
+                  'cooking_time')
+
+
+class ShortRecipeSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
+    name = serializers.CharField(read_only=True)
+    image = serializers.ImageField()
+    cooking_time = serializers.DecimalField(max_digits=4,
+                                            decimal_places=1)
+
+    class Meta:
+        model = Recipe
+        fields = ('id', 'name', 'image', 'cooking_time')
