@@ -100,13 +100,13 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 else:
                     recipes_list[item[0]]['amount'] += item[1]
 
-        data = recipes_list
+        data = str(recipes_list)
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename="shoppinglist.pdf"'
         p = canvas.Canvas(response)
         p.drawString(100, 100, data)
-        # p.showPage()
-        # p.save()
+        p.showPage()
+        p.save()
         return response
 
 
