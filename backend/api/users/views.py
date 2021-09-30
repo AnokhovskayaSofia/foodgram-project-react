@@ -21,8 +21,9 @@ class UserViewSet(UserViewSet):
             methods=['GET'],
             permission_classes=[IsAuthenticated])
     def subscriptions(self, request):
+        subscribes = User.objects.filter(user_subscribed_to__user=request.user)
         queryset = SubscribedUser.objects.filter(user=self.request.user)
-        page = self.paginate_queryset(queryset)
+        page = self.paginate_queryset(subscribes)
         if page is not None:
             serializer = SubscribeSerializer(page, many=True,
                                              context={'request': request})
@@ -33,12 +34,10 @@ class UserViewSet(UserViewSet):
 
     @action(detail=True,
             methods=['GET', 'DELETE'],
-            permission_classes=[IsAuthenticated],
-            url_path='subscribe')
-    def subscribe(self, request, pk):
+            permission_classes=[IsAuthenticated])
+    def subscribe(self, request, id=None):
         if request.method == 'GET':
-            user_subscribed_to = get_object_or_404(User, pk=pk)
-            recipes = Recipe.objects.filter(author=user_subscribed_to)
+            user_subscribed_to = get_object_or_404(User, pk=id)
             serializer = SubscribeSerializer(user_subscribed_to)
 
             if SubscribedUser.objects.filter(user=self.request.user,
@@ -49,7 +48,7 @@ class UserViewSet(UserViewSet):
                                               user_subscribed_to=user_subscribed_to)
             return Response(serializer.data)
         if request.method == 'DELETE':
-            user_subscribed_to = get_object_or_404(User, pk=pk)
+            user_subscribed_to = get_object_or_404(User, pk=id)
             if SubscribedUser.objects.filter(user=self.request.user,
                                              user_subscribed_to=user_subscribed_to).exists():
                 instance = SubscribedUser.objects.filter(user=self.request.user,

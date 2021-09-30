@@ -10,7 +10,7 @@ from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.response import Response
 
 from .serializer import RecipeSerializer, ShortRecipeSerializer, IngredientSerializer, TagsSerializer
-from .models import Recipe, Ingredient, Tag, Favourite, Shopping
+from .models import Recipe, Ingredient, Tag, Favourite, Shopping, IngredientsRecipe
 from .filters import RecipeFilter
 
 
@@ -21,7 +21,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     pagination_class = PageNumberPagination
     filter_backends = (DjangoFilterBackend,)
     filter_class = RecipeFilter
-   
+
     @action(detail=True,
             methods=['GET', 'DELETE'],
             permission_classes=[IsAuthenticated],
@@ -77,21 +77,22 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     @action(detail=False,
             methods=['GET'],
-            permission_classes=[IsAuthenticated],
-            url_path='shopping_cart')
+            permission_classes=[IsAuthenticated])
     def download_shopping_cart(self, request, pk=None):
         user = self.request.user
         shopping_list = Shopping.objects.filter(user=user)
         ingredients_name = {}
+        ingredients = []
+        ingredients_prop = {}
+        recipe=[]
         for item in shopping_list:
-            ingredients_name[item.ingredient.name] = item.ingredient.amount
-        ingredients = {}
+            ingredients = item.recipe.ingredients
+            ingredients_list = IngredientsRecipe.objects.filter(recipe=item.recipe)
+            # recipe.append(item.recipe.ingredients.name)
 
-        for item in ingredients_name:
-            ingredients_prop = {}
-            ingredients_prop[ingredients_name[item]] = item.measurement_unit
-            ingredients[item] = ingredients_prop
-        
+            # ingredients_prop[shopping_list[item]] = item.recipe.ingredients.measurement_unit
+            # ingredients[item.recipe.ingredients.name] = ingredients_prop
+
         data = ingredients
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename="shoppinglist.pdf"'
