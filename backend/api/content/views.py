@@ -81,25 +81,32 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def download_shopping_cart(self, request, pk=None):
         user = self.request.user
         shopping_list = Shopping.objects.filter(user=user)
-        ingredients_name = {}
-        ingredients = []
-        ingredients_prop = {}
-        recipe=[]
+        recipes_querysets = []
         for item in shopping_list:
-            ingredients = item.recipe.ingredients
-            ingredients_list = IngredientsRecipe.objects.filter(recipe=item.recipe)
-            # recipe.append(item.recipe.ingredients.name)
+            recipes_querysets.append(
+                item.recipe.recipe_content.values_list(
+                    'ingredient__name',
+                    'amount',
+                    'ingredient__measurement_unit')
+                )
+        # print(recipes_querysets)
+        recipes_list = {}
+        for recipes_item in recipes_querysets:
+            for item in recipes_item:
+                if not item[0] in recipes_list:
+                    recipes_list[item[0]] = {
+                        'amount': item[1], 'measurement_unit': item[2]
+                    }
+                else:
+                    recipes_list[item[0]]['amount'] += item[1]
 
-            # ingredients_prop[shopping_list[item]] = item.recipe.ingredients.measurement_unit
-            # ingredients[item.recipe.ingredients.name] = ingredients_prop
-
-        data = ingredients
+        data = recipes_list
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename="shoppinglist.pdf"'
         p = canvas.Canvas(response)
         p.drawString(100, 100, data)
-        p.showPage()
-        p.save()
+        # p.showPage()
+        # p.save()
         return response
 
 
