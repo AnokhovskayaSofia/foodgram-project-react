@@ -1,3 +1,4 @@
+import json
 from reportlab.pdfgen import canvas
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
@@ -89,7 +90,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                     'amount',
                     'ingredient__measurement_unit')
                 )
-        # print(recipes_querysets)
+
         recipes_list = {}
         for recipes_item in recipes_querysets:
             for item in recipes_item:
@@ -100,7 +101,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 else:
                     recipes_list[item[0]]['amount'] += item[1]
 
-        data = recipes_list
+        data = json.dump(recipes_list)
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename="shoppinglist.pdf"'
         p = canvas.Canvas(response)
@@ -110,7 +111,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         return response
 
 
-class IngredientsViewSet(ReadOnlyModelViewSet):
+class IngredientsViewSet(ReadOnlyModelViewSet)
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
