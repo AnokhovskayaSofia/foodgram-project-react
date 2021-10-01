@@ -1,8 +1,8 @@
 from django.contrib import admin
-from import_export.admin import ImportMixin
 from django.contrib.auth.admin import UserAdmin
+from import_export.admin import ImportMixin
 
-from .models import User, SubscribedUser
+from .models import SubscribedUser, User
 from .resources import SubscribedUserResource, UserResource
 
 

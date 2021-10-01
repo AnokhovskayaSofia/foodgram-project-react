@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 
 
@@ -39,12 +40,6 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class SubscribeSerializer(UserSerializer):
-    # from content.serializer import ShortRecipeSerializer
-    # username = serializers.CharField(read_only=True, source='user_subscribed_to.username')
-    # email = serializers.EmailField(read_only=True, source='user_subscribed_to.email')
-    # first_name = serializers.CharField(read_only=True, source='user_subscribed_to.first_name')
-    # last_name = serializers.CharField(read_only=True, source='user_subscribed_to.last_name')
-
     recipes = serializers.SerializerMethodField()
     recipes_count = serializers.SerializerMethodField()
     is_subscribed = serializers.SerializerMethodField()
@@ -74,8 +69,11 @@ class SubscribeSerializer(UserSerializer):
         serializer = ShortRecipeSerializer(queryset, many=True)
         return serializer.data
 
-    def get_is_subscribed(self, _):
-        return True
+    def get_is_subscribed(self, obj):
+        user_subscribed_to = get_object_or_404(User, pk=id)
+        return SubscribedUser.objects.filter(
+               user=self.request.user,
+               user_subscribed_to=user_subscribed_to).exists()
 
     def get_recipes_count(self, obj):
         recipes_count = obj.recipes.count()

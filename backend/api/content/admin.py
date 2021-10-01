@@ -1,11 +1,11 @@
 from django.contrib import admin
 from import_export.admin import ImportMixin
 
-from .models import (Recipe, Ingredient, IngredientsRecipe,
-                     Tag, Favourite, Shopping)
-from .resources import (RecipeResource, IngredientResource,
-                        IngredientsRecipeResource, TagResource,
-                        FavouriteResource, ShoppingResource)
+from .models import (Favourite, Ingredient, IngredientsRecipe, Recipe,
+                     Shopping, Tag)
+from .resources import (FavouriteResource, IngredientResource,
+                        IngredientsRecipeResource, RecipeResource,
+                        ShoppingResource, TagResource)
 
 
 class RecipeAdmin(ImportMixin, admin.ModelAdmin):

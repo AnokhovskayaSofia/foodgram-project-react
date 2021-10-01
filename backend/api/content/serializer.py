@@ -1,9 +1,10 @@
-from rest_framework import serializers
-from .models import (Tag, Recipe, Ingredient, IngredientsRecipe,
-                     Shopping, Favourite)
-from users.serializers import UserSerializer
-from django.shortcuts import get_object_or_404
 from django.db.models import F
+from django.shortcuts import get_object_or_404
+from rest_framework import serializers
+from users.serializers import UserSerializer
+
+from .models import (Favourite, Ingredient, IngredientsRecipe, Recipe,
+                     Shopping, Tag)
 
 
 class IngredientSerializer(serializers.ModelSerializer):

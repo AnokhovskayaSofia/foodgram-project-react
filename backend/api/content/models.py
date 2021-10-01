@@ -1,6 +1,6 @@
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from users.models import User
-from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class Ingredient(models.Model):
@@ -29,7 +29,7 @@ class Tag(models.Model):
         verbose_name='Цветовой код тега')
     slug = models.SlugField(
         verbose_name='Тег')
-    
+
     class Meta:
         verbose_name = 'Тег'
         verbose_name_plural = 'Теги'
@@ -68,8 +68,8 @@ class Recipe(models.Model):
         related_name='tags',
         verbose_name='Теги')
     cooking_time = models.IntegerField(
-        validators=[MaxValueValidator(240),
-                    MinValueValidator(1)],
+        validators=[MaxValueValidator(240, message="invalid value max limit"),
+                    MinValueValidator(1, message="invalid value min limit")],
         blank=False,
         default=1,
         verbose_name='Время приготовленмя')
@@ -120,7 +120,7 @@ class Favourite(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=['user', 'recipe'],
-                                    name='unique recipe in favorite per user'
+                                    name='unique_recipe_in_favorite_per_user'
             ), ]
         verbose_name = 'Избранный'
         verbose_name_plural = 'Избранные'
@@ -139,7 +139,7 @@ class Shopping(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=['user', 'recipe'],
-                                    name='unique recipe in shopping per user'
+                                    name='unique_recipe_in_shopping_per_user'
             ), ]
         verbose_name = 'В листе покупок'
         verbose_name_plural = verbose_name

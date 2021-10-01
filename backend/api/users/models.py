@@ -10,6 +10,9 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=150)
     email = models.EmailField(unique=True)
 
+    class Meta:
+        ordering = ('-id',)
+
 
 class SubscribedUser(models.Model):
     user = models.ForeignKey(
@@ -26,7 +29,7 @@ class SubscribedUser(models.Model):
         on_delete=models.CASCADE,
         related_name='user_subscribed_to',
         verbose_name='Пользователь на которого подписались')
-    
+
     class Meta:
         constraints = [
             models.UniqueConstraint(

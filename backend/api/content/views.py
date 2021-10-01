@@ -1,20 +1,21 @@
-from reportlab.pdfgen import canvas
+from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters, viewsets, status
+from reportlab.pdfgen import canvas
+from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import (IsAuthenticatedOrReadOnly,
-                                        IsAuthenticated)
-from rest_framework.viewsets import ReadOnlyModelViewSet
+from rest_framework.permissions import (IsAuthenticated,
+                                        IsAuthenticatedOrReadOnly)
 from rest_framework.response import Response
+from rest_framework.viewsets import ReadOnlyModelViewSet
 
-from .serializer import (RecipeSerializer, ShortRecipeSerializer,
-                         IngredientSerializer, TagsSerializer)
-from .models import (Recipe, Ingredient, Tag, Favourite,
-                     Shopping, IngredientsRecipe)
 from .filters import RecipeFilter
+from .models import (Favourite, Ingredient, IngredientsRecipe, Recipe,
+                     Shopping, Tag)
+from .serializer import (IngredientSerializer, RecipeSerializer,
+                         ShortRecipeSerializer, TagsSerializer)
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
@@ -82,27 +83,15 @@ class RecipeViewSet(viewsets.ModelViewSet):
             methods=['GET'],
             permission_classes=[IsAuthenticated])
     def download_shopping_cart(self, request, pk=None):
-        user = self.request.user
-        shopping_list = Shopping.objects.filter(user=user)
-        recipes = []
-        for item in shopping_list:
-            recipes.append(
-                item.recipe.recipe_content.values_list(
-                    'ingredient__name',
-                    'amount',
-                    'ingredient__measurement_unit')
-                )
-        recipes_list_ingredients = {}
-        for recipes_item in recipes:
-            for item in recipes_item:
-                if not item[0] in recipes_list_ingredients:
-                    recipes_list_ingredients[item[0]] = {
-                        'amount': item[1], 'measurement_unit': item[2]
-                    }
-                else:
-                    recipes_list_ingredients[item[0]]['amount'] += item[1]
-
-        data = str(recipes_list_ingredients)
+        all_ingredients_amount = IngredientsRecipe.objects.filter(
+            recipe__recipe_content__author=request.user).values_list(
+                'ingredientrecipe__name', 'amount',
+                'ingredientrecipe__measurement_unit')
+        sum_amount_ingredient = all_ingredients_amount.values(
+                                'ingredientrecipe__name',
+                                'ingredientrecipe__measurement_unit').annotate(
+                                total=Sum('amount')).order_by('-total')
+        data = str(sum_amount_ingredient)
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename="shopping.pdf"'
         p = canvas.Canvas(response)
