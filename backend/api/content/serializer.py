@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Tag, Recipe, Ingredient, IngredientsRecipe, Shopping, Favourite
+from .models import (Tag, Recipe, Ingredient, IngredientsRecipe,
+                     Shopping, Favourite)
 from users.serializers import UserSerializer
 from django.shortcuts import get_object_or_404
 from django.db.models import F
@@ -39,11 +40,7 @@ class RecipeSerializer(serializers.ModelSerializer):
     is_favourite = serializers.SerializerMethodField('check_is_favourite')
     is_in_shopping = serializers.SerializerMethodField('check_is_in_shopping')
 
-    def create(self, validated_data):
-        ingredients = validated_data.pop('ingredients')
-        tags = validated_data.pop('tags')
-        recipe = Recipe.objects.create(**validated_data)
-        recipe.tags.set(tags)
+    def ingtedient_create(self, ingredients, recipe):
         for ingredient in ingredients:
             obj = get_object_or_404(Ingredient, id=ingredient['id'])
             amount = ingredient['amount']
@@ -53,21 +50,20 @@ class RecipeSerializer(serializers.ModelSerializer):
             IngredientsRecipe.objects.update_or_create(recipe=recipe,
                                                        ingredient=obj,
                                                        defaults={'amount': amount})
+
+    def create(self, validated_data):
+        ingredients = validated_data.pop('ingredients')
+        tags = validated_data.pop('tags')
+        recipe = Recipe.objects.create(**validated_data)
+        recipe.tags.set(tags)
+        self.ingtedient_create(ingredients, recipe)
         return recipe
 
     def update(self, instance, validated_data):
         if 'ingredients' in self.initial_data:
             ingredients = validated_data.pop('ingredients')
             instance.ingredients.clear()
-            for ingredient in ingredients:
-                obj = get_object_or_404(Ingredient, id=ingredient['id'])
-                amount = ingredient['amount']
-                if IngredientsRecipe.objects.filter(recipe=instance,
-                                                    ingredient=obj).exists():
-                    amount += F('amount')
-                IngredientsRecipe.objects.update_or_create(recipe=instance,
-                                                           ingredient=obj,
-                                                           defaults={'amount': amount})
+            self.ingtedient_create(ingredients, instance)
         if 'tags' in self.initial_data:
             tags = validated_data.pop('tags')
             instance.tags.set(tags)

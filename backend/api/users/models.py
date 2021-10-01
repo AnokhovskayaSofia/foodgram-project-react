@@ -2,12 +2,6 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-class UserRole(models.TextChoices):
-    USER = 'user'
-    MODERATOR = 'moderator'
-    ADMIN = 'admin'
-
-
 class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
@@ -32,3 +26,12 @@ class SubscribedUser(models.Model):
         on_delete=models.CASCADE,
         related_name='user_subscribed_to',
         verbose_name='Пользователь на которого подписались')
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'user_subscribed_to'],
+                name='unique user per subscribed user'
+            ), ]
+        verbose_name = 'Подписки пользователя'
+        verbose_name_plural = verbose_name

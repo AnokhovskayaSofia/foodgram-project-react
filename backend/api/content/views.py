@@ -5,12 +5,15 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, viewsets, status
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework.permissions import (IsAuthenticatedOrReadOnly,
+                                        IsAuthenticated)
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.response import Response
 
-from .serializer import RecipeSerializer, ShortRecipeSerializer, IngredientSerializer, TagsSerializer
-from .models import Recipe, Ingredient, Tag, Favourite, Shopping, IngredientsRecipe
+from .serializer import (RecipeSerializer, ShortRecipeSerializer,
+                         IngredientSerializer, TagsSerializer)
+from .models import (Recipe, Ingredient, Tag, Favourite,
+                     Shopping, IngredientsRecipe)
 from .filters import RecipeFilter
 
 
@@ -81,28 +84,27 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def download_shopping_cart(self, request, pk=None):
         user = self.request.user
         shopping_list = Shopping.objects.filter(user=user)
-        recipes_querysets = []
+        recipes = []
         for item in shopping_list:
-            recipes_querysets.append(
+            recipes.append(
                 item.recipe.recipe_content.values_list(
                     'ingredient__name',
                     'amount',
                     'ingredient__measurement_unit')
                 )
-        # print(recipes_querysets)
-        recipes_list = {}
-        for recipes_item in recipes_querysets:
+        recipes_list_ingredients = {}
+        for recipes_item in recipes:
             for item in recipes_item:
-                if not item[0] in recipes_list:
-                    recipes_list[item[0]] = {
+                if not item[0] in recipes_list_ingredients:
+                    recipes_list_ingredients[item[0]] = {
                         'amount': item[1], 'measurement_unit': item[2]
                     }
                 else:
-                    recipes_list[item[0]]['amount'] += item[1]
+                    recipes_list_ingredients[item[0]]['amount'] += item[1]
 
-        data = str(recipes_list)
+        data = str(recipes_list_ingredients)
         response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="shoppinglist.pdf"'
+        response['Content-Disposition'] = 'attachment; filename="shopping.pdf"'
         p = canvas.Canvas(response)
         p.drawString(100, 100, data)
         p.showPage()

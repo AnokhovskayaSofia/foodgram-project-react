@@ -69,7 +69,7 @@ class SubscribeSerializer(UserSerializer):
         try:
             limit = self.context['request'].query_params['recipes_limit']
         except Exception:
-            pass
+            print('Ошибка получания рецептов пользователя')
         queryset = obj.recipes.all()[:int(limit)]
         serializer = ShortRecipeSerializer(queryset, many=True)
         return serializer.data
