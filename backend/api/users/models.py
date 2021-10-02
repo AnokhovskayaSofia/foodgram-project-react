@@ -6,12 +6,17 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
 
-    first_name = models.CharField(max_length=150)
-    last_name = models.CharField(max_length=150)
-    email = models.EmailField(unique=True)
+    first_name = models.CharField(max_length=150,
+                                  verbose_name='Имя')
+    last_name = models.CharField(max_length=150,
+                                 verbose_name='Фамилия')
+    email = models.EmailField(unique=True,
+                              verbose_name='Почта')
 
     class Meta:
         ordering = ('-id',)
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
 
 
 class SubscribedUser(models.Model):

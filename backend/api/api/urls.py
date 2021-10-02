@@ -1,9 +1,10 @@
 from django.contrib import admin
 from django.urls import include, path
+from djoser import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('users.urls')),
     path('api/', include('content.urls')),
-    path('api/auth/', include('djoser.urls.authtoken')),
+    path('api/auth/token/login/', views.TokenCreateView.as_view(), name='login')
 ]
