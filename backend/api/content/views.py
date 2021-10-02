@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 from django.db.models import Sum
-=======
-import json
 from reportlab.pdfgen import canvas
->>>>>>> 8a1398f402e58b1a75acddd551b220606efe8f41
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
@@ -106,7 +102,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         return response
 
 
-class IngredientsViewSet(ReadOnlyModelViewSet)
+class IngredientsViewSet(ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
