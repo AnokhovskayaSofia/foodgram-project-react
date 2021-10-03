@@ -2,9 +2,7 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 
-
-from .models import User, SubscribedUser
-
+from .models import SubscribedUser, User
 
 User = get_user_model()
 
@@ -64,7 +62,8 @@ class SubscribeSerializer(UserSerializer):
         try:
             limit = self.context['request'].query_params['recipes_limit']
         except Exception:
-            print('Ошибка получания рецептов пользователя')
+            raise serializers.ValidationError(
+                    f'Ошибка получания рецептов пользователя')
         queryset = obj.recipes.all()[:int(limit)]
         serializer = ShortRecipeSerializer(queryset, many=True)
         return serializer.data

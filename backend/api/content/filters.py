@@ -6,7 +6,8 @@ from .models import Recipe
 
 class RecipeFilter(FilterSet):
     author = filters.AllValuesFilter(field_name='author')
-    is_favorited = filters.ModelChoiceFilter(queryset=Recipe.objects.all(),
+    is_favorited = filters.ModelChoiceFilter(lookup_expr='install',
+                                             queryset=Recipe.objects.all(),
                                              method='filter_is_favorited')
     is_in_shopping_cart = filters.ModelChoiceFilter(queryset=Recipe.objects.all(),
                                                     method='filter_is_in_shopping_cart')
@@ -17,7 +18,7 @@ class RecipeFilter(FilterSet):
         fields = ['is_favorited', 'is_in_shopping_cart', 'author', 'tags']
 
     def filter_is_favorited(self, queryset, name, value):
-        return queryset.filter(favorite__user=self.request.user)
+        return queryset.filter(favourite__user=self.request.user)
 
     def filter_is_in_shopping_cart(self, queryset, name, value):
         return queryset.filter(shopping__user=self.request.user)

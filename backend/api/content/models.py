@@ -1,5 +1,6 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+
 from users.models import User
 
 
@@ -46,31 +47,25 @@ class Recipe(models.Model):
         verbose_name='Автор')
     name = models.CharField(
         max_length=30,
-        blank=False,
         verbose_name='Название')
     image = models.ImageField(
         upload_to='user_api/',
-        blank=False,
         verbose_name='Изображение')
     text = models.TextField(
         max_length=250,
-        blank=False,
         verbose_name='Описание')
     ingredients = models.ManyToManyField(
         Ingredient,
-        blank=False,
         through='IngredientsRecipe',
-        related_name='recipe',
+        related_name='recipes',
         verbose_name='Ингредиенты')
     tags = models.ManyToManyField(
         Tag,
-        blank=False,
-        related_name='tags',
+        related_name='recipes',
         verbose_name='Теги')
     cooking_time = models.IntegerField(
         validators=[MaxValueValidator(240, message="invalid value max limit"),
                     MinValueValidator(1, message="invalid value min limit")],
-        blank=False,
         default=1,
         verbose_name='Время приготовленмя')
 
@@ -111,7 +106,8 @@ class Favourite(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        verbose_name='Пользователь')
+        verbose_name='Пользователь',
+        related_name='favorite')
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
@@ -130,7 +126,8 @@ class Shopping(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        verbose_name='Пользователь')
+        verbose_name='Пользователь',
+        related_name='shopping')
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,

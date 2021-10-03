@@ -1,6 +1,7 @@
 from django.db.models import F
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
+
 from users.serializers import UserSerializer
 
 from .models import (Favourite, Ingredient, IngredientsRecipe, Recipe,
@@ -14,6 +15,7 @@ class IngredientSerializer(serializers.ModelSerializer):
 
 
 class AddIngredientsSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(source='ingredient.id')
     name = serializers.CharField(read_only=True, source='ingredient.name')
     measurement_unit = serializers.CharField(
                                         read_only=True,
@@ -40,35 +42,28 @@ class RecipeSerializer(serializers.ModelSerializer):
     tags = TagsSerializer(many=True, read_only=True)
     image = serializers.ImageField()
     cooking_time = serializers.DecimalField(max_digits=4, decimal_places=1)
-    is_favourite = serializers.SerializerMethodField('check_is_favourite')
+    is_favorite = serializers.SerializerMethodField('check_is_favorite')
     is_in_shopping = serializers.SerializerMethodField('check_is_in_shopping')
 
     def validate(self, data):
-        if self.context['request'].method == 'POST':
-            ingredients = self.context['request'].data['ingredients']
-            ingr_list = []
-            for ingr in ingredients:
-                ingredient = get_object_or_404(Ingredient, id=ingr['id'])
-                if ingredient in ingr_list:
-                    raise serializers.ValidationError(
-                        f'вы несколько раз используете {ingredient.name}'
-                    )
-                if float(ingr['amount']) < 0:
-                    raise serializers.ValidationError(
-                        f'вы ввели отрицательное количество {ingredient.name}'
-                    )
-            tags = self.context['request'].data['tags']
-            tag_list = []
-            for tag in tags:
-                tag = get_object_or_404(Tag, id=tag['id'])
-                if tag in tag_list:
-                    raise serializers.ValidationError(
-                        f'вы несколько раз используете {tag.name}'
-                    )
-            if self.context['request'].data['cooking_time'] <= 0:
-                raise serializers.ValidationError(
-                    f'вы ввели отрицательное или нулевое время приготовления')
-            return data
+        ingredients = self.initial_data.get('ingredients')
+        for ingredient_item in ingredients:
+            if int(ingredient_item['amount']) <= 0:
+                raise serializers.ValidationError({
+                    'ingredients': ('Убедитесь, что значение количества '
+                                    'ингредиента больше 0.')
+                })
+        return data
+
+    def validate_cooking_time(self, data):
+        cooking_time = self.initial_data.get('cooking_time')
+        if int(cooking_time) <= 0:
+            raise serializers.ValidationError(
+                'Убедитесь, что время '
+                'приготовления больше 0.'
+            )
+
+        return data
 
     def ingtedient_create(self, ingredients, recipe):
         for ingredient in ingredients:
@@ -106,7 +101,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-    def check_is_favourite(self, obj):
+    def check_is_favorite(self, obj):
         user = self.context.get('request').user.id
         return Favourite.objects.filter(user=user, recipe=obj).exists()
 
@@ -120,7 +115,7 @@ class RecipeSerializer(serializers.ModelSerializer):
                   'tags',
                   'author',
                   'ingredients',
-                  'is_favourite',
+                  'is_favorite',
                   'is_in_shopping',
                   'name',
                   'image',
