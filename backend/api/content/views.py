@@ -91,7 +91,14 @@ class RecipeViewSet(viewsets.ModelViewSet):
                                 'ingredientrecipe__name',
                                 'ingredientrecipe__measurement_unit').annotate(
                                 total=Sum('amount')).order_by('-total')
-        data = str(sum_amount_ingredient)
+        recipes_list = []
+        for recipes_item in sum_amount_ingredient:
+            if not recipes_item in recipes_list:
+                recipes_list[recipes_item[0]] = {
+                    'measurement_unit': recipes_item[2],
+                    'amount': recipes_item[1]
+                }
+        data = str(recipes_list)
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename="shopping.pdf"'
         p = canvas.Canvas(response)
