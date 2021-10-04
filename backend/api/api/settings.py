@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'content',
     'djoser',
     'drf_spectacular',
+    'import_export',
 ]
 
 MIDDLEWARE = [

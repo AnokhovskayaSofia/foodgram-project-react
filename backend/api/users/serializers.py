@@ -62,8 +62,7 @@ class SubscribeSerializer(UserSerializer):
         try:
             limit = self.context['request'].query_params['recipes_limit']
         except Exception:
-            raise serializers.ValidationError(
-                    f'Ошибка получания рецептов пользователя')
+            limit = 10
         queryset = obj.recipes.all()[:int(limit)]
         serializer = ShortRecipeSerializer(queryset, many=True)
         return serializer.data
