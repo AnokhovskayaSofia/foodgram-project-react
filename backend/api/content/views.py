@@ -14,17 +14,25 @@ from rest_framework.viewsets import ReadOnlyModelViewSet
 from .filters import RecipeFilter
 from .models import (Favourite, Ingredient, IngredientsRecipe, Recipe,
                      Shopping, Tag)
-from .serializer import (IngredientSerializer, RecipeSerializer,
-                         ShortRecipeSerializer, TagsSerializer)
+from .serializer import (IngredientSerializer, PostRecipeSerializer,
+                         ShortRecipeSerializer, TagsSerializer, GetRecipeSerializer)
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
-    serializer_class = RecipeSerializer
+    serializer_class = GetRecipeSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     pagination_class = PageNumberPagination
     filter_backends = (DjangoFilterBackend,)
     filter_class = RecipeFilter
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return GetRecipeSerializer
+        return PostRecipeSerializer
 
     @action(detail=True,
             methods=['GET', 'DELETE'],
@@ -84,25 +92,21 @@ class RecipeViewSet(viewsets.ModelViewSet):
             permission_classes=[IsAuthenticated])
     def download_shopping_cart(self, request, pk=None):
         all_ingredients_amount = IngredientsRecipe.objects.filter(
-            recipe__recipe_content__author=request.user).values_list(
-                'ingredientrecipe__name', 'amount',
-                'ingredientrecipe__measurement_unit')
+            recipe__shoppings__user=request.user).values_list(
+                'ingredient__name', 'amount',
+                'ingredient__measurement_unit')
         sum_amount_ingredient = all_ingredients_amount.values(
-                                'ingredientrecipe__name',
-                                'ingredientrecipe__measurement_unit').annotate(
+                                'ingredient__name',
+                                'ingredient__measurement_unit').annotate(
                                 total=Sum('amount')).order_by('-total')
-        recipes_list = []
-        for recipes_item in sum_amount_ingredient:
-            if not recipes_item in recipes_list:
-                recipes_list[recipes_item[0]] = {
-                    'measurement_unit': recipes_item[2],
-                    'amount': recipes_item[1]
-                }
-        data = str(recipes_list)
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename="shopping.pdf"'
         p = canvas.Canvas(response)
-        p.drawString(100, 100, data)
+        line_position = 800
+        for recipes_item in sum_amount_ingredient:
+            data = str(recipes_item)
+            line_position -= 15
+            p.drawString(10, line_position, data)
         p.showPage()
         p.save()
         return response
@@ -113,8 +117,12 @@ class IngredientsViewSet(ReadOnlyModelViewSet):
     serializer_class = IngredientSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     pagination_class = None
-    filter_backends = (filters.SearchFilter)
+    filter_backends = (DjangoFilterBackend,)
     search_fields = ('^name',)
+
+    def list(self,request):
+          serializer = IngredientSerializer(self.get_queryset(), many=True)
+          return Response(serializer.data)
 
 
 class TagsViewSet(ReadOnlyModelViewSet):

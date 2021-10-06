@@ -75,3 +75,4 @@ psycopg2-binary
 djoser
 reportlab
 drf-spectacular
+django-extra-fields

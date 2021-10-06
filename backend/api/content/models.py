@@ -71,7 +71,7 @@ class Recipe(models.Model):
     class Meta:
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
-        # ordering = ['-pub_date']
+        ordering = ['-id']
 
 
 class IngredientsRecipe(models.Model):
@@ -133,7 +133,7 @@ class Shopping(models.Model):
         Recipe,
         on_delete=models.CASCADE,
         verbose_name='Рецепт',
-        related_name='shopping')
+        related_name='shoppings')
 
     class Meta:
         constraints = [

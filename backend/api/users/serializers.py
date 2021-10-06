@@ -7,11 +7,6 @@ from .models import SubscribedUser, User
 User = get_user_model()
 
 
-class ActivationSerializer(serializers.Serializer):
-    email = serializers.EmailField(required=True)
-    confirmation_code = serializers.CharField(max_length=200)
-
-
 class UserSerializer(serializers.ModelSerializer):
     is_subscribed = serializers.SerializerMethodField()
 
@@ -68,10 +63,8 @@ class SubscribeSerializer(UserSerializer):
         return serializer.data
 
     def get_is_subscribed(self, obj):
-        user_subscribed_to = get_object_or_404(User, pk=id)
-        return SubscribedUser.objects.filter(
-               user=self.request.user,
-               user_subscribed_to=user_subscribed_to).exists()
+        user = self.context['request'].user
+        return obj.user_subscribed_to.filter(user=user).exists()
 
     def get_recipes_count(self, obj):
         recipes_count = obj.recipes.count()
