@@ -1,6 +1,6 @@
 # praktikum_new_diplom
 foodgram-project-react
-![example Actions Status](https://github.com/AnokhovskayaSofia/foodgram-project-react/actions/workflows/main/badge.svg)](https://github.com/AnokhovskayaSofia/foodgram-project-react/actions)
+<!-- ![example Actions Status](https://github.com/AnokhovskayaSofia/foodgram-project-react/actions/workflows/main/badge.svg)](https://github.com/AnokhovskayaSofia/foodgram-project-react/actions) -->
 # Дипломный проект
 ### Технологии разработки backend
 Python 3.7
@@ -17,7 +17,7 @@ pip install -r requirements.txt
 ```bash
 python3 manage.py runserver
 ```
-### Запуск проекта в Docker
+<!-- ### Запуск проекта в Docker
 - Установите образ из DockerHub
 ```bash
 docker pull anokhovskaya/foodgram-project-react
@@ -49,6 +49,6 @@ DB_PORT=5432
 SECRET_KEY='django-insecure-j6*%mpfh&$ro!fm0*gn!&yk)75$1f-cp$ci7iu469^2n1691hs'
 ```
 ### Адрес
-- 62.84.112.208
+- 62.84.112.208 -->
 ### Авторы
 Соня
