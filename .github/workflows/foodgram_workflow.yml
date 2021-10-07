@@ -50,8 +50,3 @@ jobs:
           echo DB_HOST=${{ secrets.DB_HOST }} >> .env
           echo DB_PORT=${{ secrets.DB_PORT }} >> .env
           sudo docker-compose up -d
-        out: latest: Pulling from anokhovskaya/***_infra_frontend
-        out: Digest: sha256:4df9787832f14578457a14fa909142fc4b7251a0655271f4cd5baa2514401e5f
-        out: Status: Image is up to date for anokhovskaya/***_infra_frontend:latest
-        out: docker.io/anokhovskaya/***_infra_frontend:latest
-        out: latest: Pulling from anokhovskaya/***_infra_backend
