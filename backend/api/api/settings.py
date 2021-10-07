@@ -10,9 +10,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
+
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
