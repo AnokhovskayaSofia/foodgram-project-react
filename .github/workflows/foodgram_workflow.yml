@@ -20,7 +20,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/infra_backend:latest  
+          context: ./backend/
+          tags: anokhovskaya/infra_backend:latest
   deploy:
     runs-on: ubuntu-latest
     needs: build_and_push_to_docker_hub
