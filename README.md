@@ -17,7 +17,7 @@ pip install -r requirements.txt
 ```bash
 python3 manage.py runserver
 ```
-<!-- ### Запуск проекта в Docker
+### Запуск проекта в Docker
 - Установите образ из DockerHub
 ```bash
 docker pull anokhovskaya/foodgram-project-react
@@ -49,6 +49,9 @@ DB_PORT=5432
 SECRET_KEY='django-insecure-j6*%mpfh&$ro!fm0*gn!&yk)75$1f-cp$ci7iu469^2n1691hs'
 ```
 ### Адрес
-- 62.84.112.208 -->
+- 62.84.119.66
+### Admin
+- email: ad@ad.ad
+- password: ad
 ### Авторы
 Соня
