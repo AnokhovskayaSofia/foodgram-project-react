@@ -11,11 +11,12 @@ from rest_framework.permissions import (IsAuthenticated,
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
-from .filters import RecipeFilter, IngredientFilter
+from .filters import IngredientFilter, RecipeFilter
 from .models import (Favourite, Ingredient, IngredientsRecipe, Recipe,
                      Shopping, Tag)
-from .serializer import (IngredientSerializer, PostRecipeSerializer,
-                         ShortRecipeSerializer, TagsSerializer, GetRecipeSerializer)
+from .serializer import (GetRecipeSerializer, IngredientSerializer,
+                         PostRecipeSerializer, ShortRecipeSerializer,
+                         TagsSerializer)
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
@@ -117,8 +118,8 @@ class IngredientsViewSet(ReadOnlyModelViewSet):
     serializer_class = IngredientSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     pagination_class = None
-    filter_backends = (DjangoFilterBackend,)
-    filter_class = IngredientFilter
+    filter_backends = (filters.SearchFilter) 
+    search_fields = ('^name',)
 
     def list(self,request):
           serializer = IngredientSerializer(self.get_queryset(), many=True)
