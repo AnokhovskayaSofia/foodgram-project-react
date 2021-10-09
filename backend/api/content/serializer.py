@@ -127,16 +127,12 @@ class PostRecipeSerializer(serializers.ModelSerializer):
             )
         if int(cooking_time) <= 0:
             raise serializers.ValidationError({
-                'cooking_time': (
                     'Значение должно быть положительным'
-                )
             })
         for ingredient in ingredients:
             if int(ingredient['amount']) <= 0:
                 raise serializers.ValidationError({
-                    'ingredients': (
                         'Значение должно быть положительным'
-                    )
                 })
             id = ingredient.get('id')
             if id in ingredients_set:
