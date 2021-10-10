@@ -10,20 +10,27 @@ from rest_framework.permissions import (IsAuthenticated,
                                         IsAuthenticatedOrReadOnly)
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 
-from .filters import IngredientFilter, RecipeFilter
+from .filters import RecipeFilter
 from .models import (Favourite, Ingredient, IngredientsRecipe, Recipe,
                      Shopping, Tag)
 from .serializer import (GetRecipeSerializer, IngredientSerializer,
                          PostRecipeSerializer, ShortRecipeSerializer,
                          TagsSerializer)
+from rest_framework.pagination import PageNumberPagination
 
+
+class CustomPageNumberPaginator(PageNumberPagination):
+    page_size_query_param = 'limit'
 
 class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = GetRecipeSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
-    pagination_class = PageNumberPagination
+    # pagination_class = PageNumberPagination.page_size = 999
+    pagination_class = CustomPageNumberPaginator
     filter_backends = (DjangoFilterBackend,)
     filter_class = RecipeFilter
 
@@ -64,6 +71,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     @action(detail=True,
             methods=['GET', 'DELETE'],
             permission_classes=[IsAuthenticated],
+            pagination_class = None,
             url_path='shopping_cart')
     def shopping_cart(self, request, pk=None):
         if request.method == 'GET':
@@ -92,22 +100,62 @@ class RecipeViewSet(viewsets.ModelViewSet):
             methods=['GET'],
             permission_classes=[IsAuthenticated])
     def download_shopping_cart(self, request, pk=None):
-        all_ingredients_amount = IngredientsRecipe.objects.filter(
-            recipe__shoppings__user=request.user).values_list(
-                'ingredient__name', 'amount',
-                'ingredient__measurement_unit')
-        sum_amount_ingredient = all_ingredients_amount.values(
-                                'ingredient__name',
-                                'ingredient__measurement_unit').annotate(
-                                total=Sum('amount')).order_by('-total')
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename="shopping.pdf"'
         p = canvas.Canvas(response)
+        pdfmetrics.registerFont(TTFont('DejaVuSerif','DejaVuSerif.ttf', 'UTF-8'))
+        p.setFont("DejaVuSerif", 10)
+        # textobj = p.beginText()
+
+        # header = p.beginText()
+        # header_text = 'Список покупок'
+        
+        # header_font_name = 'DejaVuSerif'
+        # header_font_size = 18
+        # # textobj.setTextOrigin(2 * cm, 2 * cm)
+        # textobj.setFont('DejaVuSerif', 14)
+        res = []
+        
+        rec_ingredients = (
+                IngredientsRecipe.objects.values(
+                    'ingredient__name',
+                    'ingredient__measurement_unit',
+                )
+                .filter(recipe__shoppings__user=request.user)
+                .annotate(Sum('amount'))
+            )
+        for rec_ingredient in rec_ingredients:
+            res.append(
+                f"{rec_ingredient['ingredient__name'].capitalize()} - "
+                f"{rec_ingredient['amount__sum']} "
+                f"{rec_ingredient['ingredient__measurement_unit']}"
+            )
+
+        # for line in res:
+        #     textobj.textLine(line)
+
+        # p.drawText(header)
+        # p.drawText(textobj)
+
+        
+        # pdfmetrics.registerFont(TTFont('DejaVuSerif','DejaVuSerif.ttf', 'UTF-8'))
+        # p.setFont("DejaVuSerif", 10)
+        
+        # all_ingredients_amount = IngredientsRecipe.objects.filter(
+        #     recipe__shoppings__user=request.user).values_list(
+        #         'ingredient__name', 'amount',
+        #         'ingredient__measurement_unit')
+        # sum_amount_ingredient = all_ingredients_amount.values(
+        #                         'ingredient__name',
+        #                         'ingredient__measurement_unit').annotate(
+        #                         total=Sum('amount')).order_by('-total')
+
         line_position = 800
-        for recipes_item in sum_amount_ingredient:
+        for recipes_item in res:
             data = str(recipes_item)
             line_position -= 15
             p.drawString(10, line_position, data)
+        
         p.showPage()
         p.save()
         return response
@@ -118,12 +166,19 @@ class IngredientsViewSet(ReadOnlyModelViewSet):
     serializer_class = IngredientSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     pagination_class = None
-    filter_backends = (filters.SearchFilter) 
-    search_fields = ('^name',)
 
     def list(self,request):
           serializer = IngredientSerializer(self.get_queryset(), many=True)
           return Response(serializer.data)
+    
+    def get_queryset(self):
+        name = self.request.query_params.get('name')
+        queryset = Ingredient.objects.all()
+
+        if name:
+            queryset = queryset.filter(name__istartswith=name).distinct('name')
+
+        return queryset
 
 
 class TagsViewSet(ReadOnlyModelViewSet):

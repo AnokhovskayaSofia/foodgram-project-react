@@ -126,14 +126,13 @@ class PostRecipeSerializer(serializers.ModelSerializer):
                 'Выберите минимум один тег'
             )
         if int(cooking_time) <= 0:
-            raise serializers.ValidationError({
-                    'Значение должно быть положительным'
-            })
+            raise serializers.ValidationError(
+                    'Значение времени должно быть положительным'
+            )
         for ingredient in ingredients:
             if int(ingredient['amount']) <= 0:
-                raise serializers.ValidationError({
-                        'Значение должно быть положительным'
-                })
+                raise serializers.ValidationError(
+                        'Значение колво ингредиента должно быть положительным')
             id = ingredient.get('id')
             if id in ingredients_set:
                 raise serializers.ValidationError('Ингредиент уже добавлен')

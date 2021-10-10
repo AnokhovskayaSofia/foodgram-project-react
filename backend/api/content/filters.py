@@ -2,6 +2,7 @@ from django_filters import filters
 from django_filters.rest_framework import FilterSet
 
 from .models import Ingredient, Recipe
+from .serializer import GetRecipeSerializer
 
 
 class RecipeFilter(FilterSet):
@@ -26,13 +27,11 @@ class RecipeFilter(FilterSet):
 
     def get_is_in_shopping_cart(self, queryset, name, value):
         user = self.request.user
+        shopping = Recipe.objects.filter(shoppings__user=user)
         if value:
+            # page = self.paginate_queryset(shopping)
+            # if page is not None:
+                # serializer = GetRecipeSerializer(page, many=True)
+                # return self.get_paginated_response(serializer.data)
             return Recipe.objects.filter(shoppings__user=user)
         return Recipe.objects.all()
-
-
-class IngredientFilter(FilterSet):
-    name = filters.CharFilter(lookup_expr='startswith')
-    class Meta:
-        model = Ingredient
-        fields = ['name']

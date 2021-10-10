@@ -63,8 +63,8 @@ class Recipe(models.Model):
         related_name='recipes',
         verbose_name='Теги')
     cooking_time = models.IntegerField(
-        validators=[MaxValueValidator(240, message="invalid value max limit"),
-                    MinValueValidator(1, message="invalid value min limit")],
+        # validators=[MaxValueValidator(240, message="invalid value max limit"),
+        #             MinValueValidator(1, message="invalid value min limit")],
         default=1,
         verbose_name='Время приготовленмя')
 
@@ -85,7 +85,7 @@ class IngredientsRecipe(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Рецепт',
         related_name='recipe_content')
-    amount = models.PositiveIntegerField(
+    amount = models.IntegerField(
         default=1,
         verbose_name='Количество ингредиентор')
 
