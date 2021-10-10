@@ -2,6 +2,8 @@ from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
@@ -10,8 +12,6 @@ from rest_framework.permissions import (IsAuthenticated,
                                         IsAuthenticatedOrReadOnly)
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFont
 
 from .filters import RecipeFilter
 from .models import (Favourite, Ingredient, IngredientsRecipe, Recipe,
@@ -19,7 +19,6 @@ from .models import (Favourite, Ingredient, IngredientsRecipe, Recipe,
 from .serializer import (GetRecipeSerializer, IngredientSerializer,
                          PostRecipeSerializer, ShortRecipeSerializer,
                          TagsSerializer)
-from rest_framework.pagination import PageNumberPagination
 
 
 class CustomPageNumberPaginator(PageNumberPagination):
@@ -105,15 +104,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
         p = canvas.Canvas(response)
         pdfmetrics.registerFont(TTFont('DejaVuSerif','DejaVuSerif.ttf', 'UTF-8'))
         p.setFont("DejaVuSerif", 10)
-        # textobj = p.beginText()
-
-        # header = p.beginText()
-        # header_text = 'Список покупок'
-        
-        # header_font_name = 'DejaVuSerif'
-        # header_font_size = 18
-        # # textobj.setTextOrigin(2 * cm, 2 * cm)
-        # textobj.setFont('DejaVuSerif', 14)
         res = []
         
         rec_ingredients = (
@@ -130,25 +120,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 f"{rec_ingredient['amount__sum']} "
                 f"{rec_ingredient['ingredient__measurement_unit']}"
             )
-
-        # for line in res:
-        #     textobj.textLine(line)
-
-        # p.drawText(header)
-        # p.drawText(textobj)
-
-        
-        # pdfmetrics.registerFont(TTFont('DejaVuSerif','DejaVuSerif.ttf', 'UTF-8'))
-        # p.setFont("DejaVuSerif", 10)
-        
-        # all_ingredients_amount = IngredientsRecipe.objects.filter(
-        #     recipe__shoppings__user=request.user).values_list(
-        #         'ingredient__name', 'amount',
-        #         'ingredient__measurement_unit')
-        # sum_amount_ingredient = all_ingredients_amount.values(
-        #                         'ingredient__name',
-        #                         'ingredient__measurement_unit').annotate(
-        #                         total=Sum('amount')).order_by('-total')
 
         line_position = 800
         for recipes_item in res:
