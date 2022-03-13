@@ -52,7 +52,7 @@ class Recipe(models.Model):
         upload_to='user_api/',
         verbose_name='Изображение')
     text = models.TextField(
-        max_length=250,
+        max_length=1000,
         verbose_name='Описание')
     ingredients = models.ManyToManyField(
         Ingredient,
