@@ -1,5 +1,5 @@
 from django.contrib import admin
-from import_export.admin import ImportMixin, ImportExportMixin
+from import_export.admin import ImportMixin, ImportExportModelAdmin
 
 from .models import (Favourite, Ingredient, IngredientsRecipe, Recipe,
                      Shopping, Tag)
@@ -12,7 +12,7 @@ class RecipeAdmin(ImportMixin, admin.ModelAdmin):
     resource_class = RecipeResource
 
 
-class IngredientAdmin(ImportExportMixin, admin.ModelAdmin):
+class IngredientAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = IngredientResource
 
 
