@@ -12,7 +12,7 @@ class RecipeAdmin(ImportMixin, admin.ModelAdmin):
     resource_class = RecipeResource
 
 
-class IngredientAdmin(ImportMixin, admin.ModelAdmin):
+class IngredientAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = IngredientResource
 
 
