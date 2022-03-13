@@ -14,6 +14,7 @@ class Ingredient(models.Model):
 
     class Meta:
         ordering = ['name']
+        fields = ['name', 'measurement_unit']
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
 
@@ -143,3 +144,8 @@ class Shopping(models.Model):
             ), ]
         verbose_name = 'В листе покупок'
         verbose_name_plural = verbose_name
+
+class TestModel(models.Model):
+    user = models.IntegerField(
+        default=1,
+        verbose_name='Количество ингредиентор')
