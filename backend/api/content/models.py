@@ -14,7 +14,6 @@ class Ingredient(models.Model):
 
     class Meta:
         ordering = ['name']
-        fields = ('name', 'measurement_unit')
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
 
