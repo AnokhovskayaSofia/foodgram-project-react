@@ -1,5 +1,5 @@
 from django.contrib import admin
-from import_export.admin import ImportMixin, ImportExportModelAdmin
+from import_export.admin import ImportMixin, ImportExportModelAdmin # type: ignore
 
 from .models import (Favourite, Ingredient, IngredientsRecipe, Recipe,
                      Shopping, Tag)
