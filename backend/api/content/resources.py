@@ -19,7 +19,7 @@ class RecipeResource(resources.ModelResource):
 class IngredientResource(resources.ModelResource):
     class Meta:
         model = Ingredient
-        fields = ('name', 'measurement_unit')
+        fields = ('id', 'name', 'measurement_unit')
 
 
 class IngredientsRecipeResource(resources.ModelResource):
