@@ -10,9 +10,9 @@ services:
       - ../.env
 
   backend:
-    # build:
-    #   context: ../backend/api
-    #   dockerfile: Dockerfile
+    build:
+      context: ../backend/api
+      dockerfile: Dockerfile
     image: infra_backend
     restart: always
     volumes:
@@ -24,9 +24,9 @@ services:
       - ../.env
 
   frontend:
-    # build:
-    #   context: ../frontend
-    #   dockerfile: Dockerfile
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
     image: infra_frontend
     volumes:
       - ../frontend/:/app/result_build/

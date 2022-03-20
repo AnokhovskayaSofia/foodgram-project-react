@@ -7,15 +7,15 @@ from users.models import User
 class Ingredient(models.Model):
     name = models.CharField(
         max_length=200,
-        verbose_name='Название ингредиента')
+        verbose_name='Название инградиента')
     measurement_unit = models.CharField(
         max_length=200,
         verbose_name='Единица измерения')
 
     class Meta:
         ordering = ['name']
-        verbose_name = 'Ингредиент'
-        verbose_name_plural = 'Ингредиенты'
+        verbose_name = 'Инградиент'
+        verbose_name_plural = 'Инградиенты'
 
     def __str__(self):
         return self.name
