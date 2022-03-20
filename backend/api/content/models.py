@@ -52,7 +52,7 @@ class Recipe(models.Model):
         upload_to='user_api/',
         verbose_name='Изображение')
     text = models.TextField(
-        max_length=1000,
+        max_length=2000,
         verbose_name='Описание')
     ingredients = models.ManyToManyField(
         Ingredient,
@@ -143,8 +143,3 @@ class Shopping(models.Model):
             ), ]
         verbose_name = 'В листе покупок'
         verbose_name_plural = verbose_name
-
-class TestModel(models.Model):
-    user = models.IntegerField(
-        default=1,
-        verbose_name='Количество ингредиентор')
