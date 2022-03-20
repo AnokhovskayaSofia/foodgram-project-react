@@ -121,7 +121,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 f"{rec_ingredient['ingredient__measurement_unit']}"
             )
 
-        line_position = 800
+        line_position = 700
         title = f"Список покупок для рецептов:"
         p.drawString(15, line_position, title)
         for recipes_item in res:
