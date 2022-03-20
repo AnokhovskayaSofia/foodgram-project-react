@@ -2,8 +2,8 @@ version: '3.3'
 services:
   db:
     image: postgres:12.4
-    environment:
-      - PGDATA: "/var/lib/postgresql/data/pgdata"
+    # environment:
+    #   - PGDATA: "/var/lib/postgresql/data/pgdata"
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
