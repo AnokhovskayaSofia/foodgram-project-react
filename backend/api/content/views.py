@@ -118,7 +118,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             res.append(
                 f"{rec_ingredient['ingredient__name'].capitalize()} - "
                 f"{rec_ingredient['amount__sum']} "
-                f"{rec_ingredient['ingredient__measurement_unit']}"
+                # f"{rec_ingredient['ingredient__measurement_unit']}"
             )
 
         line_position = 700
