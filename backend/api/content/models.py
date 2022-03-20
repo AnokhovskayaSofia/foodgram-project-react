@@ -21,6 +21,7 @@ class Ingredient(models.Model):
         return self.name
 
 
+
 class Tag(models.Model):
     name = models.CharField(
         max_length=200,
