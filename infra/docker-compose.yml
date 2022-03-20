@@ -2,15 +2,18 @@ version: '3.3'
 services:
   db:
     image: postgres:12.4
+    environment:
+      - PGDATA: "/var/lib/postgresql/data/pgdata"
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
       - ../.env
 
   backend:
-    build:
-      context: ../backend/api
-      dockerfile: Dockerfile
+    # build:
+    #   context: ../backend/api
+    #   dockerfile: Dockerfile
+    image: infra_backend
     restart: always
     volumes:
       - static_value:/code/static/
@@ -21,9 +24,10 @@ services:
       - ../.env
 
   frontend:
-    build:
-      context: ../frontend
-      dockerfile: Dockerfile
+    # build:
+    #   context: ../frontend
+    #   dockerfile: Dockerfile
+    image: infra_frontend
     volumes:
       - ../frontend/:/app/result_build/
 
