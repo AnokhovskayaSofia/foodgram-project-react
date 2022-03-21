@@ -1,9 +1,7 @@
 import os
 
 from dotenv import load_dotenv
-import django
 
-django.setup()
 load_dotenv()
 
 from pathlib import Path
@@ -12,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -56,9 +54,6 @@ DJOSER = {
 
 
 INSTALLED_APPS = [
-    'content.apps.ContentConfig',
-    'import_export.admin',
-    'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -71,6 +66,7 @@ INSTALLED_APPS = [
     'content',
     'djoser',
     'drf_spectacular',
+    'import_export',
 ]
 
 MIDDLEWARE = [
@@ -141,7 +137,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
