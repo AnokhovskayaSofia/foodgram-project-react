@@ -57,10 +57,6 @@ DJOSER = {
 
 INSTALLED_APPS = [
     'content.apps.ContentConfig',
-    'users',
-    'content',
-    'djoser',
-    'drf_spectacular',
     'import_export.admin',
     'django.contrib.sites',
     'django.contrib.admin',
@@ -71,7 +67,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    
+    'users',
+    'content',
+    'djoser',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
