@@ -14,7 +14,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['51.250.22.246']
+ALLOWED_HOSTS = ['*']
 
 
 REST_FRAMEWORK = {
@@ -56,7 +56,12 @@ DJOSER = {
 
 
 INSTALLED_APPS = [
-    # 'content.apps.ContentConfig',
+    'content.apps.ContentConfig',
+    'users',
+    'content',
+    'djoser',
+    'drf_spectacular',
+    'import_export.admin',
     'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -66,11 +71,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'users',
-    'content',
-    'djoser',
-    'drf_spectacular',
-    'import_export.admin',
+    
 ]
 
 MIDDLEWARE = [
