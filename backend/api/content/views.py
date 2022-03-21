@@ -118,12 +118,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
             res.append(
                 f"{rec_ingredient['ingredient__name'].capitalize()} - "
                 f"{rec_ingredient['amount__sum']} "
-                # f"{rec_ingredient['ingredient__measurement_unit']}"
+                f"{rec_ingredient['ingredient__measurement_unit']}"
             )
 
         line_position = 700
-        title = f"Список покупок для рецептов:"
-        p.drawString(15, line_position, title)
+        # title = f"Список покупок для рецептов:"
+        # p.drawString(15, line_position, title)
         for recipes_item in res:
             data = str(recipes_item)
             line_position -= 15
