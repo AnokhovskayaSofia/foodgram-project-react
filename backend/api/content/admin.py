@@ -1,9 +1,9 @@
 from django.contrib import admin
 from import_export.admin import ImportMixin
 
-from .models import (Favourite, Ingredient, IngredientsRecipe, Recipe,
+from content.models import (Favourite, Ingredient, IngredientsRecipe, Recipe,
                      Shopping, Tag)
-from .resources import (FavouriteResource, IngredientResource,
+from content.resources import (FavouriteResource, IngredientResource,
                         IngredientsRecipeResource, RecipeResource,
                         ShoppingResource, TagResource)
 
