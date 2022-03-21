@@ -1,7 +1,9 @@
 import os
 
 from dotenv import load_dotenv
+import django
 
+django.setup()
 load_dotenv()
 
 from pathlib import Path
