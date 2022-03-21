@@ -56,7 +56,8 @@ DJOSER = {
 
 
 INSTALLED_APPS = [
-    'content.apps.ContentConfig',
+    # 'content.apps.ContentConfig',
+    'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
