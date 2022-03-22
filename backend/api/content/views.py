@@ -107,6 +107,18 @@ class RecipeViewSet(viewsets.ModelViewSet):
         # pdfmetrics.registerFont(TTFont('Arial','Arial.ttf', 'UTF-8'))
 
         res = []
+        name = []
+
+        rec_name = (
+                Recipe.objects.values(
+                    'name',
+                )
+                .filter(recipe__shoppings__user=request.user)
+            )
+        for item in rec_name:
+            name.append(
+                f"{item[name].captalize()}"
+            )
         
         rec_ingredients = (
                 IngredientsRecipe.objects.values(
@@ -124,8 +136,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
             )
 
         line_position = 800
-        title = f"Список покупок для рецептов:"
-        p.setFont("DejaVuSans", 20)
+        title = f"Список продуктов для рецептов:"
+        p.setFont("DejaVuSans", 25)
         p.setFillColor(blue)
         p.drawString(30, line_position, title)
         
@@ -133,10 +145,16 @@ class RecipeViewSet(viewsets.ModelViewSet):
         p.setFont("DejaVuSans", 10)
         p.setFillColor(black)
         line_position -= 15
+
+        for name_item in name:
+            data = str(name_item)
+            line_position -= 15
+            p.drawString(40, line_position, data)
+
         for recipes_item in res:
             data = str(recipes_item)
             line_position -= 15
-            p.drawString(35, line_position, data)
+            p.drawString(40, line_position, data)
         
         p.showPage()
         p.save()
