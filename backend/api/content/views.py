@@ -104,7 +104,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         response['Content-Disposition'] = 'attachment; filename="shopping.pdf"'
         p = canvas.Canvas(response)
         pdfmetrics.registerFont(TTFont('DejaVuSans','DejaVuSans.ttf', 'UTF-8'))
-        pdfmetrics.registerFont(TTFont('Arial','Arial.ttf', 'UTF-8'))
+        # pdfmetrics.registerFont(TTFont('Arial','Arial.ttf', 'UTF-8'))
 
         res = []
         
