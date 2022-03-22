@@ -122,8 +122,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
             )
 
         line_position = 700
-        # title = f"Список покупок для рецептов:"
-        # p.drawString(15, line_position, title)
+        title = f"Список покупок для рецептов:"
+        p.drawString(15, line_position, title)
         for recipes_item in res:
             data = str(recipes_item)
             line_position -= 15
