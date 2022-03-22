@@ -113,11 +113,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 Recipe.objects.values(
                     'name',
                 )
-                .filter(shoppings__user=request.user)
+                .filter(recipe__shoppings__user=request.user)
             )
         for item in rec_names:
             name.append(
-                f"{item['name'].captalize()}"
+                f"{item['name'].capitalize()}"
             )
         
         rec_ingredients = (
