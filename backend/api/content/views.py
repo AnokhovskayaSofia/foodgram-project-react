@@ -103,9 +103,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename="shopping.pdf"'
         p = canvas.Canvas(response)
-        pdfmetrics.registerFont(TTFont('DejaVuSerif','DejaVuSerif.ttf', 'UTF-8'))
-        p.setFont("DejaVuSerif", 20)
-        p.setFillColor(blue)
+        pdfmetrics.registerFont(TTFont('DejaVuSans','DejaVuSans.ttf', 'UTF-8'))
+        pdfmetrics.registerFont(TTFont('Arial','Arial.ttf', 'UTF-8'))
+
         res = []
         
         rec_ingredients = (
@@ -125,16 +125,18 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
         line_position = 800
         title = f"Список покупок для рецептов:"
-        p.drawString(20, line_position, title)
+        p.setFont("Arial", 20)
+        p.setFillColor(blue)
+        p.drawString(30, line_position, title)
         
 
-        p.setFont("DejaVuSerif", 10)
+        p.setFont("DejaVuSans", 10)
         p.setFillColor(black)
         line_position -= 15
         for recipes_item in res:
             data = str(recipes_item)
             line_position -= 15
-            p.drawString(10, line_position, data)
+            p.drawString(35, line_position, data)
         
         p.showPage()
         p.save()
