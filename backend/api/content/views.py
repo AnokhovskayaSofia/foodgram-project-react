@@ -146,14 +146,15 @@ class RecipeViewSet(viewsets.ModelViewSet):
         p.setFillColor(black)
         line_position -= 15
 
-        p.line(30, line_position+7, 150, line_position+7 )
+        p.line(30, line_position+5, 700, line_position+5 )
 
         for name_item in name:
             data = str(name_item)
             line_position -= 15
             p.drawString(40, line_position, data)
 
-        p.line(30, line_position-7, 150, line_position-7 )
+        line_position -= 15
+        p.line(30, line_position, 700, line_position )
 
         for recipes_item in res:
             data = str(recipes_item)
