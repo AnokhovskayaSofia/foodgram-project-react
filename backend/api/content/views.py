@@ -113,7 +113,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 Recipe.objects.values(
                     'name',
                 )
-                .filter(recipe__shoppings__user=request.user)
+                .filter(shoppings__user=request.user)
             )
         for item in rec_names:
             name.append(
