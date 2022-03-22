@@ -142,7 +142,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         p.drawString(30, line_position, title)
         
 
-        p.setFont("DejaVuSans", 10)
+        p.setFont("DejaVuSans", 20)
         p.setFillColor(black)
         line_position -= 15
 
@@ -155,6 +155,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
         line_position -= 15
         p.line(30, line_position, 700, line_position )
+        p.setFont("DejaVuSans", 10)
 
         for recipes_item in res:
             data = str(recipes_item)
