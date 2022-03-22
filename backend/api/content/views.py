@@ -113,7 +113,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 Recipe.objects.values(
                     'name',
                 )
-                .filter(recipe__shoppings__user=request.user)
+                .filter(shoppings__user=request.user)
             )
         for item in rec_names:
             name.append(
@@ -125,7 +125,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                     'ingredient__name',
                     'ingredient__measurement_unit',
                 )
-                .filter(shoppings__user=request.user)
+                .filter(recipe__shoppings__user=request.user)
                 .annotate(Sum('amount'))
             )
         for rec_ingredient in rec_ingredients:
