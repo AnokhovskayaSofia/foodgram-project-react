@@ -2,6 +2,7 @@ from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
+from reportlab.lib.colors import blue, black
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
@@ -104,7 +105,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         p = canvas.Canvas(response)
         pdfmetrics.registerFont(TTFont('DejaVuSerif','DejaVuSerif.ttf', 'UTF-8'))
         p.setFont("DejaVuSerif", 20)
-        p.setFontColor(0,0,1)
+        p.setFillColor(blue)
         res = []
         
         rec_ingredients = (
@@ -128,6 +129,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         
 
         p.setFont("DejaVuSerif", 10)
+        p.setFillColor(black)
         line_position -= 15
         for recipes_item in res:
             data = str(recipes_item)
