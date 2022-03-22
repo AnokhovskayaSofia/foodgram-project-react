@@ -125,7 +125,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
         line_position = 800
         title = f"Список покупок для рецептов:"
-        p.setFont("Arial", 20)
+        p.setFont("DejaVuSans", 20)
         p.setFillColor(blue)
         p.drawString(30, line_position, title)
         
