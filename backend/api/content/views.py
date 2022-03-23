@@ -2,7 +2,7 @@ from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-from reportlab.lib.colors import blue, black
+from reportlab.lib.colors import blue, black, grey
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
@@ -136,32 +136,44 @@ class RecipeViewSet(viewsets.ModelViewSet):
             )
 
         line_position = 800
-        title = f"Список продуктов для рецептов:"
+        title = f"Это твой списочек на сегодня:"
         p.setFont("DejaVuSans", 25)
         p.setFillColor(blue)
         p.drawString(30, line_position, title)
+
+        p.setFillColor(grey)
+        line_position -= 10
+        p.line(30, line_position, 500, line_position)
         
+        title = f"Список рецептиков:"
+        p.setFont("DejaVuSans", 25)
+        p.setFillColor(black)
+        line_position -= 20
+        p.drawString(30, line_position, title)
+        title = f"Список инградиентов:"
+        p.drawString(160, line_position, title)
+
+        p.setFillColor(grey)
+        line_position -= 10
+        p.line(30, line_position, 500, line_position)
+        p.line(160, line_position, 500, line_position)
+
 
         p.setFont("DejaVuSans", 15)
-        p.setFillColor(black)
-        line_position -= 15
-
-        p.line(30, line_position+6, 700, line_position+6 )
-
         for name_item in name:
             data = str(name_item)
             line_position -= 20
             p.drawString(40, line_position, data)
 
-        line_position -= 15
-        p.line(30, line_position, 700, line_position )
-        p.setFont("DejaVuSans", 10)
-        
+        # line_position -= 15
+        # p.line(30, line_position, 700, line_position )
+        # p.setFont("DejaVuSans", 10)
+
         line_position -= 15
         for recipes_item in res:
             data = str(recipes_item)
             line_position -= 15
-            p.drawString(40, line_position, data)
+            p.drawString(170, line_position, data)
         
         p.showPage()
         p.save()
