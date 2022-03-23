@@ -148,22 +148,22 @@ class RecipeViewSet(viewsets.ModelViewSet):
         p.setFillColor(black)
         title = f"Список рецептиков:"
         p.setFont("DejaVuSans", 17)
-        line_position -= 20
+        line_position -= 40
         p.drawString(30, line_position, title)
         title = f"Список инградиентов:"
-        p.drawString(160, line_position, title)
+        p.drawString(300, line_position, title)
 
         p.setFillColor(grey)
         line_position -= 10
         p.line(30, line_position, 200, line_position)
-        p.line(160, line_position, 200, line_position)
+        p.line(300, line_position, 470, line_position)
 
 
         p.setFillColor(black)
         p.setFont("DejaVuSans", 15)
         for name_item in name:
             data = str(name_item)
-            line_position -= 20
+            line_position -= 22
             p.drawString(40, line_position, data)
 
         # line_position -= 15
@@ -173,8 +173,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
         line_position -= 15
         for recipes_item in res:
             data = str(recipes_item)
-            line_position -= 15
-            p.drawString(170, line_position, data)
+            line_position -= 22
+            p.drawString(310, line_position, data)
         
         p.showPage()
         p.save()
