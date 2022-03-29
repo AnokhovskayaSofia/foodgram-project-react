@@ -31,8 +31,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
     # pagination_class = PageNumberPagination.page_size = 999
     pagination_class = CustomPageNumberPaginator
-    # filter_backends = (DjangoFilterBackend,)
+    filter_backends = (DjangoFilterBackend,)
     filter_class = RecipeFilter
+    filterset_fields = ('tags', )
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
