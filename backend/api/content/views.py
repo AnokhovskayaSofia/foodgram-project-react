@@ -31,9 +31,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
     # pagination_class = PageNumberPagination.page_size = 999
     pagination_class = CustomPageNumberPaginator
-    filter_backends = (DjangoFilterBackend,)
+    # filter_backends = (DjangoFilterBackend,)
     filter_class = RecipeFilter
-    filterset_fields = ('is_favorited', 'is_in_shopping_cart', 'author', 'tags__slug', )
+    # filterset_fields = ('is_favorited', 'is_in_shopping_cart', 'author', 'tags__slug', )
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
