@@ -22,6 +22,12 @@ jobs:
           push: true
           context: ./backend/api
           tags: anokhovskaya/infra_backend:latest
+      - name: Push to Docker Hub 2
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          context: ./frontend
+          tags: anokhovskaya/infra_frontend:latest
   deploy:
     runs-on: ubuntu-latest
     needs: build_and_push_to_docker_hub

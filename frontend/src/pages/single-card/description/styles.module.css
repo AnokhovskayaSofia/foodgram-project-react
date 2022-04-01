@@ -1,5 +1,6 @@
 .description {
   padding-bottom: 20px;
+  white-space: pre;
 }
 
 .description__title {
@@ -16,5 +17,6 @@
 @media screen and (max-width: 820px) {
   .description {
     padding-bottom: 30px;
+    white-space: pre;
   }
 }
