@@ -161,7 +161,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
 
         p.setFillColor(black)
-        p.setFont("DejaVuSans", 17)
+        p.setFont("DejaVuSans", 15)
         line_position -= 10
 
         line_position_ = line_position
