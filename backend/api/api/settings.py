@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'users',
     'content',
+    'market',
     'djoser',
     'drf_spectacular',
     'import_export',
