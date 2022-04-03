@@ -10,3 +10,6 @@ class ProductAdmin(ImportMixin, admin.ModelAdmin):
 
 class ItemAdmin(ImportMixin, admin.ModelAdmin):
     resource_class = ItemResource
+
+admin.site.register(Product, ProductAdmin)
+admin.site.register(Item, ItemAdmin)
