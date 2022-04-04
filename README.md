@@ -49,9 +49,6 @@ DB_PORT=5432
 SECRET_KEY='django-insecure-j6*%mpfh&$ro!fm0*gn!&yk)75$1f-cp$ci7iu469^2n1691hs'
 ```
 ### Адрес
-- 62.84.119.66
-### Admin
-- email: ad@ad.ad
-- password: ad
+- http://foodie.ddns.net/recipes
 ### Авторы
 Соня
