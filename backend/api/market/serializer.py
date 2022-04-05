@@ -24,4 +24,20 @@ class GetProductSerializer(serializers.ModelSerializer):
                   'item',
                   'name',
                   'image',
+                  'price',
                   'text',)
+
+
+class ShortProductSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
+    name = serializers.CharField(read_only=True)
+    image = serializers.ImageField()
+    price = serializers.DecimalField(max_digits=4,
+                                     decimal_places=1)
+
+    class Meta:
+        model = Recipe
+        fields = ('id',
+                  'name',
+                  'image',
+                  'price',)

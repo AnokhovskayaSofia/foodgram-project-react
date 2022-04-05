@@ -37,3 +37,31 @@ class ProductViewSet(viewsets.ModelViewSet):
     # def get_serializer_class(self):
     #     if self.request.method == 'GET':
     #         return GetProductSerializer
+
+    @action(detail=True,
+            methods=['GET', 'DELETE'],
+            permission_classes=[IsAuthenticated],
+            pagination_class = None,
+            url_path='product_cart')
+    def shopping_cart(self, request, pk=None):
+        if request.method == 'GET':
+            product = get_object_or_404(Product, pk=pk)
+            serializer = ShortProductSerializer(product)
+            if ShoppingCart.objects.filter(user=self.request.user,
+                                       product=product).exists():
+                return Response({'errors': 'Продукт уже в Списке покупок'})
+            else:
+                ShoppingCart.objects.create(user=self.request.user,
+                                        product=product)
+            return Response(serializer.data)
+        elif request.method == 'DELETE':
+            product = get_object_or_404(Product, pk=pk)
+            if ShoppingCart.objects.filter(user=self.request.user,
+                                       product=product).exists():
+                instance = ShoppingCart.objects.get(user=self.request.user,
+                                                product=product)
+                instance.delete()
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            else:
+                return Response({'errors': 'Продукта нет в Списке покупок'},
+                                 status=status.HTTP_400_BAD_REQUEST)
