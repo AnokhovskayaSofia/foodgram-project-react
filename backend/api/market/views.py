@@ -1,14 +1,18 @@
-from django.shortcuts import render
-
+from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from rest_framework.response import Response
-from rest_framework.decorators import action
+from django_filters.rest_framework import DjangoFilterBackend
+from reportlab.lib.colors import blue, black, grey
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfgen import canvas
 from rest_framework import filters, status, viewsets
+from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.permissions import (IsAuthenticated,
                                         IsAuthenticatedOrReadOnly)
+from rest_framework.response import Response
+from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from .models import (Item, Product, ShoppingCart)
 from .serializer import (ItemSerializer, GetProductSerializer, ShortProductSerializer)
