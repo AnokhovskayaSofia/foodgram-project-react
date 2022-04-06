@@ -32,8 +32,8 @@ class ProductViewSet(viewsets.ModelViewSet):
     # filter_class = RecipeFilter
     # filterset_fields = ('is_favorited', 'is_in_shopping_cart', 'author', 'tags__slug', )
 
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+    # def perform_create(self, serializer):
+    #     serializer.save(author=self.request.user)
 
     # def get_serializer_class(self):
     #     if self.request.method == 'GET':
