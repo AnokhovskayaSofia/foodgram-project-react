@@ -36,7 +36,7 @@ class ShortProductSerializer(serializers.ModelSerializer):
                                      decimal_places=1)
 
     class Meta:
-        model = Recipe
+        model = Product
         fields = ('id',
                   'name',
                   'image',
