@@ -5,7 +5,7 @@ from .models import Ingredient, Product
 from .serializer import GetProductSerializer
 
 
-class RecipeFilter(FilterSet):
+class ProductFilter(FilterSet):
     author = filters.AllValuesFilter(field_name='author')
 
     is_in_shopping_cart = filters.BooleanFilter(
@@ -14,7 +14,7 @@ class RecipeFilter(FilterSet):
     item = filters.AllValuesMultipleFilter(field_name='item__slug')
 
     class Meta:
-        model = Recipe
+        model = Product
         fields = ['is_in_shopping_cart', 'author', 'item']
 
     def get_is_in_shopping_cart(self, queryset, name, value):

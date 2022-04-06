@@ -1,8 +1,8 @@
 from django.contrib import admin
 from import_export.admin import ImportMixin
 
-from market.models import (Item, Product)
-from market.resources import (ProductResource, ItemResource)
+from market.models import (Item, Product, ShoppingCart)
+from market.resources import (ProductResource, ItemResource, ShoppingCartResource)
 
 
 class ProductAdmin(ImportMixin, admin.ModelAdmin):
@@ -11,5 +11,9 @@ class ProductAdmin(ImportMixin, admin.ModelAdmin):
 class ItemAdmin(ImportMixin, admin.ModelAdmin):
     resource_class = ItemResource
 
+class ShoppingCartAdmin(ImportMixin, admin.ModelAdmin):
+    resource_class = ShoppingCartResource
+
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Item, ItemAdmin)
+admin.site.register(ShoppingCart, ShoppingCartAdmin)
