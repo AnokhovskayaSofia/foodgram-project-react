@@ -10,8 +10,8 @@ from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.permissions import (IsAuthenticated,
                                         IsAuthenticatedOrReadOnly)
 
-from .models import (Item, Product)
-from .serializer import (ItemSerializer, GetProductSerializer)
+from .models import (Item, Product, ShoppingCart)
+from .serializer import (ItemSerializer, GetProductSerializer, ShortProductSerializer)
 
 
 
