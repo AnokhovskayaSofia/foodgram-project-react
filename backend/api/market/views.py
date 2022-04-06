@@ -48,7 +48,7 @@ class ProductViewSet(viewsets.ModelViewSet):
             permission_classes=[IsAuthenticated],
             pagination_class = None,
             url_path='product_cart')
-    def shopping_cart(self, request, pk=None):
+    def product_cart(self, request, pk=None):
         if request.method == 'GET':
             product = get_object_or_404(Product, pk=pk)
             serializer = ShortProductSerializer(product)
