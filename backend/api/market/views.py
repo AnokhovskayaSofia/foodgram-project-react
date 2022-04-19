@@ -28,7 +28,7 @@ class ItemViewSet(ReadOnlyModelViewSet):
 
 
 class ProductViewSet(viewsets.ModelViewSet):
-    queryset = Product.objects.all()
+    # queryset = Product.objects.all()
     serializer_class = GetProductSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     # pagination_class = PageNumberPagination.page_size = 999
