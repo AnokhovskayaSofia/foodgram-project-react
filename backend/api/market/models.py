@@ -38,7 +38,7 @@ class Product(models.Model):
     price = models.IntegerField(
         default=0,
         verbose_name='Цена')
-    price_ = models.IntegerField(
+    price_q = models.IntegerField(
         default=0,
         verbose_name='Цена')
 
