@@ -39,9 +39,6 @@ class MyProduct(models.Model):
     price = models.IntegerField(
         default=0,
         verbose_name='Цена')
-    price_q = models.IntegerField(
-        default=0,
-        verbose_name='Цена')
 
     class Meta:
         verbose_name = 'Продукт'
