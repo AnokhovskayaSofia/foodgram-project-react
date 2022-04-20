@@ -5,7 +5,7 @@ from rest_framework import serializers
 
 # from users.serializers import UserSerializer
 
-from .models import (Item, Product)
+from .models import (Item, MyProduct)
 
 class ItemSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,7 +19,7 @@ class GetProductSerializer(serializers.ModelSerializer):
     image = Base64ImageField(max_length=None, use_url=True)
     
     class Meta:
-        model = Product
+        model = MyProduct
         fields = ('id',
                   'item',
                   'name',
@@ -36,7 +36,7 @@ class ShortProductSerializer(serializers.ModelSerializer):
                                      decimal_places=1)
 
     class Meta:
-        model = Product
+        model = MyProduct
         fields = ('id',
                   'name',
                   'image',

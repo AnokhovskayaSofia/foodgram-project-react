@@ -14,7 +14,7 @@ from rest_framework.permissions import (IsAuthenticated,
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
-from .models import (Item, Product, ShoppingCart)
+from .models import (Item, MyProduct, ShoppingCart)
 from .serializer import (ItemSerializer, GetProductSerializer, ShortProductSerializer)
 
 
@@ -28,7 +28,7 @@ class ItemViewSet(ReadOnlyModelViewSet):
 
 
 class ProductViewSet(viewsets.ModelViewSet):
-    queryset = Product.objects.all()
+    queryset = MyProduct.objects.all()
     serializer_class = GetProductSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     # pagination_class = PageNumberPagination.page_size = 999
@@ -51,7 +51,7 @@ class ProductViewSet(viewsets.ModelViewSet):
             url_path='product_cart')
     def product_cart(self, request, pk=None):
         if request.method == 'GET':
-            product = get_object_or_404(Product, pk=pk)
+            product = get_object_or_404(MyProduct, pk=pk)
             serializer = ShortProductSerializer(product)
             if ShoppingCart.objects.filter(user=self.request.user,
                                        product=product).exists():
@@ -61,7 +61,7 @@ class ProductViewSet(viewsets.ModelViewSet):
                                         product=product)
             return Response(serializer.data)
         elif request.method == 'DELETE':
-            product = get_object_or_404(Product, pk=pk)
+            product = get_object_or_404(MyProduct, pk=pk)
             if ShoppingCart.objects.filter(user=self.request.user,
                                        product=product).exists():
                 instance = ShoppingCart.objects.get(user=self.request.user,
