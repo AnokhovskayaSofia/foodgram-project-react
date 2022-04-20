@@ -21,7 +21,8 @@ class Item(models.Model):
     def __str__(self):
         return self.name
 
-class Product(models.Model):
+
+class MyProduct(models.Model):
     name = models.CharField(
         max_length=30,
         verbose_name='Название')
@@ -54,7 +55,7 @@ class ShoppingCart(models.Model):
         verbose_name='Пользователь',
         related_name='shopcart')
     product = models.ForeignKey(
-        Product,
+        MyProduct,
         on_delete=models.CASCADE,
         verbose_name='Товар',
         related_name='shoppings')
