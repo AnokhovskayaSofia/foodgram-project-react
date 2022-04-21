@@ -22,19 +22,6 @@ class Item(models.Model):
         return self.name
 
 
-class Item2(models.Model):
-    name = models.CharField(
-        max_length=200,
-        verbose_name='Название ингредиента')
-
-    class Meta:
-        verbose_name = 'Ингредиент продукта'
-        verbose_name_plural = 'Ингредиенты продукта'
-
-    def __str__(self):
-        return self.name
-
-
 class MyProduct(models.Model):
     name = models.CharField(
         max_length=30,
@@ -45,10 +32,10 @@ class MyProduct(models.Model):
     text = models.TextField(
         max_length=2000,
         verbose_name='Описание')
-    item = models.ManyToManyField(
-        Item,
-        related_name='recipes',
-        verbose_name='Состав')
+    # item = models.ManyToManyField(
+    #     Item,
+    #     related_name='recipes',
+    #     verbose_name='Состав')
     price = models.IntegerField(
         default=0,
         verbose_name='Цена')
