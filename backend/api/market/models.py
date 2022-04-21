@@ -22,6 +22,19 @@ class Item(models.Model):
         return self.name
 
 
+class Item2(models.Model):
+    name = models.CharField(
+        max_length=200,
+        verbose_name='Название ингредиента')
+
+    class Meta:
+        verbose_name = 'Ингредиент продукта'
+        verbose_name_plural = 'Ингредиенты продукта'
+
+    def __str__(self):
+        return self.name
+
+
 class MyProduct(models.Model):
     name = models.CharField(
         max_length=30,
