@@ -19,7 +19,8 @@ from rest_framework.viewsets import ReadOnlyModelViewSet
 
 
 
-# class ItemViewSet(ReadOnlyModelViewSet):
+class ItemViewSet(ReadOnlyModelViewSet):
+    pass
 #     queryset = Item.objects.all()
 #     serializer_class = ItemSerializer
 #     permission_classes = [IsAuthenticatedOrReadOnly]
@@ -27,7 +28,8 @@ from rest_framework.viewsets import ReadOnlyModelViewSet
 
 
 
-# class ProductViewSet(viewsets.ModelViewSet):
+class ProductViewSet(viewsets.ModelViewSet):
+    pass
 #     queryset = MyProduct.objects.all()
 #     serializer_class = GetProductSerializer
 #     permission_classes = [IsAuthenticatedOrReadOnly]
