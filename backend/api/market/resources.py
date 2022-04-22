@@ -9,8 +9,7 @@ class ProductResource(resources.ModelResource):
         fields = ('id',
                   'name',
                   'text',
-                  'item',
-                  'price',)
+                  'item',)
 
 class ItemResource(resources.ModelResource):
     class Meta:

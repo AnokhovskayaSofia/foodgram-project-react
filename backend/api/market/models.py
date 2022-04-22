@@ -52,7 +52,7 @@ class ShoppingCart(models.Model):
         verbose_name='Пользователь',
         related_name='shopcart')
     product = models.ForeignKey(
-        MyProduct,
+        Product,
         on_delete=models.CASCADE,
         verbose_name='Товар',
         related_name='shoppings')
