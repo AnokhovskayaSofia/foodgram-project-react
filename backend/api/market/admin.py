@@ -17,5 +17,5 @@ class ItemAdmin(ImportMixin, admin.ModelAdmin):
 #     resource_class = ShoppingCartResource
 
 # admin.site.register(MyProduct, ProductAdmin)
-# admin.site.register(Item, ItemAdmin)
+admin.site.register(Item, ItemAdmin)
 # admin.site.register(ShoppingCart, ShoppingCartAdmin)
