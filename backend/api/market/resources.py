@@ -17,7 +17,7 @@ class ItemResource(resources.ModelResource):
         fields = ('id', 'HEX_code', 'slug',)
 
 
-class ShoppingCartResource(resources.ModelResource):
-    class Meta:
-        model = ShoppingCart
-        fields = ('user', 'product', 'count',)
+# class ShoppingCartResource(resources.ModelResource):
+#     class Meta:
+#         model = ShoppingCart
+#         fields = ('user', 'product', 'count',)
