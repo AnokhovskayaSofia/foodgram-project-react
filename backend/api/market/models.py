@@ -36,9 +36,9 @@ class Product(models.Model):
         Item,
         related_name='recipes',
         verbose_name='Состав')
-#     price = models.IntegerField(
-#         default=0,
-#         verbose_name='Цена')
+    price = models.IntegerField(
+        default=0,
+        verbose_name='Цена')
 
     class Meta:
         verbose_name = 'Продукт'
