@@ -1,11 +1,11 @@
 from import_export import resources
 
-from .models import (Item , MyProduct, ShoppingCart)
+from .models import (Item , Product, ShoppingCart)
 
 
 class ProductResource(resources.ModelResource):
     class Meta:
-        model = MyProduct
+        model = Product
         fields = ('id',
                   'name',
                   'text',

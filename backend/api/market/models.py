@@ -22,7 +22,7 @@ class Item(models.Model):
         return self.name
 
 
-class MyProduct(models.Model):
+class Product(models.Model):
     name = models.CharField(
         max_length=30,
         verbose_name='Название')
