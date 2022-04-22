@@ -44,3 +44,29 @@ class Product(models.Model):
         verbose_name = 'Продукт'
         verbose_name_plural = 'Продукт'
         ordering = ['-id']
+
+
+class ShoppingCart(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name='Пользователь',
+        related_name='shopcart')
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        verbose_name='Товар',
+        related_name='shoppings')
+    count = models.IntegerField(
+        validators=[MaxValueValidator(240, message="invalid value max limit"),
+                    MinValueValidator(1, message="invalid value min limit")],
+        default=1,
+        verbose_name='Количество')
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'product'],
+                                    name='unique_product_in_shopping_per_user'
+            ), ]
+        verbose_name = 'В листе покупок'
+        verbose_name_plural = verbose_name
