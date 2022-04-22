@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'users',
     'content',
     'market',
+    'shop',
     'djoser',
     'drf_spectacular',
     'import_export',
