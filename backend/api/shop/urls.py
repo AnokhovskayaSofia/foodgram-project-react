@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 
 # from .views import ProductViewSet, ItemViewSet
 
-# router = DefaultRouter()
+router = DefaultRouter()
 # router.register('product', ProductViewSet, basename='ProductViewSets')
 # router.register('item', ItemViewSet, basename='ItemViewSet')
 
