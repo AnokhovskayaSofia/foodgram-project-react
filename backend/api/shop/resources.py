@@ -1,6 +1,6 @@
 from import_export import resources
 
-from .models import (Item , Product, ShoppingCart, Cart)
+from .models import (Item , Product, Cart)
 
 class ProductResource(resources.ModelResource):
     class Meta:
