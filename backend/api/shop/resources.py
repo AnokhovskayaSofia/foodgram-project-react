@@ -20,7 +20,7 @@ class ItemResource(resources.ModelResource):
 class ShoppingCartResource(resources.ModelResource):
     class Meta:
         model = ShoppingCart
-        fields = ('user',)
+        fields = ('count',)
 
 
 class CartResource(resources.ModelResource):
