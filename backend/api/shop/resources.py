@@ -17,10 +17,10 @@ class ItemResource(resources.ModelResource):
         fields = ('id', 'HEX_code', 'slug',)
 
 
-class ShoppingCartResource(resources.ModelResource):
-    class Meta:
-        model = ShoppingCart
-        fields = ('count',)
+# class ShoppingCartResource(resources.ModelResource):
+#     class Meta:
+#         model = ShoppingCart
+#         fields = ('count',)
 
 
 class CartResource(resources.ModelResource):
