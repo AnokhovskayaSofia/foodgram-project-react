@@ -76,3 +76,4 @@ djoser
 reportlab
 drf-spectacular
 django-extra-fields
+django-dbshell-plus

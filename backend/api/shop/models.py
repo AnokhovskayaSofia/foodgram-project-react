@@ -70,3 +70,22 @@ class ShoppingCart(models.Model):
         #     ), ]
         verbose_name = 'В листе покупок'
         verbose_name_plural = verbose_name
+
+
+class Cart(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name='Пользователь',
+        related_name='shopcart')
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        verbose_name='Товар',
+        related_name='shoppings')
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'product'],
+                                    name='unique_product_in_shopping_per_user'
+            ), ]
