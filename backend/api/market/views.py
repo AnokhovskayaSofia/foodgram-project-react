@@ -14,37 +14,37 @@ from rest_framework.permissions import (IsAuthenticated,
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
-# from .models import (Item, MyProduct, ShoppingCart)
-# from .serializer import (ItemSerializer, GetProductSerializer, ShortProductSerializer)
+from .models import (Item, Product, Cart)
+from .serializer import (ItemSerializer, GetProductSerializer, ShortProductSerializer)
 
 
 
 class ItemViewSet(ReadOnlyModelViewSet):
     pass
-#     queryset = Item.objects.all()
-#     serializer_class = ItemSerializer
-#     permission_classes = [IsAuthenticatedOrReadOnly]
-#     pagination_class = None
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    pagination_class = None
 
 
 
 class ProductViewSet(viewsets.ModelViewSet):
     pass
-#     queryset = MyProduct.objects.all()
-#     serializer_class = GetProductSerializer
-#     permission_classes = [IsAuthenticatedOrReadOnly]
-#     # pagination_class = PageNumberPagination.page_size = 999
-#     pagination_class = PageNumberPagination
-#     # filter_backends = (DjangoFilterBackend,)
-#     # filter_class = RecipeFilter
-#     # filterset_fields = ('is_favorited', 'is_in_shopping_cart', 'author', 'tags__slug', )
+    queryset = Product.objects.all()
+    serializer_class = GetProductSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    # pagination_class = PageNumberPagination.page_size = 999
+    pagination_class = PageNumberPagination
+    # filter_backends = (DjangoFilterBackend,)
+    # filter_class = RecipeFilter
+    # filterset_fields = ('is_favorited', 'is_in_shopping_cart', 'author', 'tags__slug', )
 
-#     # def perform_create(self, serializer):
-#     #     serializer.save(author=self.request.user)
+    # def perform_create(self, serializer):
+    #     serializer.save(author=self.request.user)
 
-#     # def get_serializer_class(self):
-#     #     if self.request.method == 'GET':
-#     #         return GetProductSerializer
+    # def get_serializer_class(self):
+    #     if self.request.method == 'GET':
+    #         return GetProductSerializer
 
 #     @action(detail=True,
 #             methods=['GET', 'DELETE'],
