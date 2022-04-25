@@ -1,7 +1,7 @@
 from django_filters import filters
 from django_filters.rest_framework import FilterSet
 
-from .models import Ingredient, Product
+from .models import Item, Product
 from .serializer import GetProductSerializer
 
 
