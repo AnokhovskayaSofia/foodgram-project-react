@@ -15,6 +15,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from .models import (Item, Product, Cart)
+from .filters import ProductFilter
 from .serializer import (ItemSerializer, GetProductSerializer, ShortProductSerializer)
 
 
@@ -36,7 +37,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     # pagination_class = PageNumberPagination.page_size = 999
     pagination_class = PageNumberPagination
     # filter_backends = (DjangoFilterBackend,)
-    # filter_class = RecipeFilter
+    filter_class = ProductFilter
     # filterset_fields = ('is_favorited', 'is_in_shopping_cart', 'author', 'tags__slug', )
 
     # def perform_create(self, serializer):

@@ -85,9 +85,9 @@ class Cart(models.Model):
         related_name='shoppings')
     
     class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=['user', 'product'],
-                                    name='unique_product_in_shopping_per_user'
-            ), ]
+        # constraints = [
+        #     models.UniqueConstraint(fields=['user', 'product'],
+        #                             name='unique_product_in_shopping_per_user'
+        #     ), ]
         verbose_name = 'В листе покупок'
         verbose_name_plural = verbose_name
