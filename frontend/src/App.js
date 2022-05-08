@@ -19,7 +19,8 @@ import {
   RecipeEdit,
   RecipeCreate,
   User,
-  ChangePassword
+  ChangePassword,
+  Shop
 } from './pages'
 
 import { AuthContext, UserContext } from './contexts'
@@ -208,6 +209,14 @@ function App() {
             exact
             path='/favorites'
             component={Favorites}
+            loggedIn={loggedIn}
+            updateOrders={updateOrders}
+          />
+
+          <ProtectedRoute 
+            exact
+            path='/shop'
+            component = {Shop}
             loggedIn={loggedIn}
             updateOrders={updateOrders}
           />

@@ -9,6 +9,9 @@ import Subscriptions from './subscriptions'
 import RecipeCreate from './recipe-create'
 import User from './user'
 import ChangePassword from './change-password'
+import Shop from "./shop"
+
+
 
 export {
   Main,
@@ -21,5 +24,6 @@ export {
   Subscriptions,
   RecipeCreate,
   User,
-  ChangePassword
+  ChangePassword,
+  Shop
 }
