@@ -218,7 +218,7 @@ function App() {
             path='/shop'
             component = {Shop}
             loggedIn={loggedIn}
-            updateOrders={updateOrders}
+            
           />
 
           <ProtectedRoute

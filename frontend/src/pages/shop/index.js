@@ -11,8 +11,8 @@ const Shop = () => {
                 </MetaTags>
 
                 <div className={styles.title}>
-                    <Title title='Избранное' />
-                    <CheckboxGroup values={tagsValue} handleChange={handleTagsChange} />
+                    <Title title='Магазин' />
+                    
                 </div>
 
             </Container>
