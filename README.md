@@ -1,5 +1,4 @@
 # Diplom project
-![Actions Status](https://github.com/AnokhovskayaSofia/foodgram-project-react/actions/workflows/main/badge.svg)](https://github.com/AnokhovskayaSofia/foodgram-project-react/actions) -->
 > :ramen: It is a social network project where users can share their recipes. 
 > *They can share their recipes, subscribe to other users, add recipes to their 'favorites' and to their 'shopping list', as well as download a PDF list of products for recipes in their 'shopping list'.*
 ### Currently working at
