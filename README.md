@@ -1,54 +1,49 @@
-# praktikum_new_diplom
-foodgram-project-react
-<!-- ![example Actions Status](https://github.com/AnokhovskayaSofia/foodgram-project-react/actions/workflows/main/badge.svg)](https://github.com/AnokhovskayaSofia/foodgram-project-react/actions) -->
-# Дипломный проект
-### Технологии разработки backend
-Python 3.7
-Django 2.2.19
-Docker 20.10.8
-nginx 1.18.0-0ubuntu1.2
-### Запуск проекта в dev-режиме
-- Установите и активируйте виртуальное окружение
-- Установите зависимости из файла requirements.txt
+# Diplom project
+> :ramen: It is a social network project where users can share their recipes. 
+> *They can share their recipes, subscribe to other users, add recipes to their 'favorites' and to their 'shopping list', as well as download a PDF list of products for recipes in their 'shopping list'.*
+### Currently working at
+- http://foodie.ddns.net/recipes
+### Author
+Sofia
+____
+### Backend development technologies
+- Python 3.7
+- Django 2.2.19
+- Docker 20.10.8
+- nginx 1.18.0-0ubuntu1.2
+____
+### Launching project in dev mode
+- Install and activate the virtual environment
+- Install dependencies from the file requirements.txt
 ```bash
 pip install -r requirements.txt
 ``` 
-- В папке с файлом manage.py выполните команду:
+- In the file folder manage.py run the command:
 ```bash
 python3 manage.py runserver
 ```
-### Запуск проекта в Docker
-- Установите образ из DockerHub
+____
+### Launching project in Docker
+- Install the image from DockerHub
 ```bash
 docker pull anokhovskaya/foodgram-project-react
 ``` 
-- Нужно собрать контейнер и запустить
+- You need to assemble the container and run
 ```bash
 docker-compose up -d --build
 ``` 
-- Нужно сделать миграции
+- You need to make migrations
 ```bash
 docker-compose exec web python manage.py migrate --noinput
 ```
-- Нужно создать пользователя
+- You need to create admin user
 ```bash
 docker-compose exec web python manage.py createsuperuser
 ```
-- Нужно собрать статику
+- You need to collect static
 ```bash
 docker-compose exec web python manage.py collectstatic --no-input
 ```
-- Нужно создайть файл .env с переменными окружения для работы с базой данных
-```bash
-DB_ENGINE=django.db.backends.postgresql
-DB_NAME=postgres
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
-DB_HOST=db
-DB_PORT=5432
-SECRET_KEY='django-insecure-j6*%mpfh&$ro!fm0*gn!&yk)75$1f-cp$ci7iu469^2n1691hs'
-```
-### Адрес
-- http://foodie.ddns.net/recipes
-### Авторы
-Соня
+- You need to create a file .env with environment variables for working with the database
+
+
