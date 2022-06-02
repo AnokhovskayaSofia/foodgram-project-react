@@ -11,6 +11,7 @@ class ProductAdmin(ImportMixin, admin.ModelAdmin):
 class ItemAdmin(ImportMixin, admin.ModelAdmin):
     resource_class = ItemResource
 
+
 # class ShoppingCartAdmin(ImportMixin, admin.ModelAdmin):
 #     resource_class = ShoppingCartResource
 
