@@ -5,7 +5,7 @@
 - http://foodie.ddns.net/recipes
 - http://51.250.27.51/
 ### Author
-Sofia
+Sofia Anokhovskaya
 ____
 ### Backend development technologies
 - Python 3.7
